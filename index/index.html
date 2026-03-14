@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PVS Narayana Murthy | Data Science Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="../images/logo.png">
+</head>
+<body>
+    <div id="page-transition"></div>
+    <div id="cursor"></div>
+    <div id="cursor-follower"><span id="cursor-text"></span></div>
+    <div id="spotlight-overlay"></div>
+    
+    <!-- Pointer line to resume (SVG) -->
+    <svg id="resume-pointer" class="resume-pointer hidden" xmlns="http://www.w3.org/2000/svg">
+        <path id="resume-path" d="" fill="none" stroke="var(--text-color)" stroke-width="2" stroke-dasharray="8 8"/>
+        <polygon id="resume-arrowhead" points="-6,-6 10,0 -6,6" fill="var(--text-color)"/>
+        <text class="resume-text" fill="var(--text-color)" dy="-10">
+            <textPath href="#resume-path" startOffset="50%" text-anchor="middle">
+                Download my resume
+            </textPath>
+        </text>
+    </svg>
+    
+    <div id="spotlight-controls" class="spotlight-controls hidden">
+        <label for="spotlight-slider">Spotlight Radius</label>
+        <input type="range" id="spotlight-slider" min="10" max="60" value="20">
+    </div>
+
+    <nav class="creative-nav">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fa-solid fa-cube"></i> PVS Narayana Murthy<span>.</span>
+            </div>
+            <div class="nav-center">
+                <ul class="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="skills.html">Skills</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#certifications">Certificates</a></li>
+                </ul>
+            </div>
+            <div class="nav-right">
+                <button class="spotlight-toggle inactive" id="spotlight-toggle" aria-label="Toggle Spotlight">
+                    <i class="fa-solid fa-lightbulb"></i>
+                </button>
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Theme">
+                    <i class="fa-solid fa-sun light-icon"></i>
+                    <i class="fa-solid fa-moon dark-icon"></i>
+                </button>
+                <div class="hamburger">
+                    <div class="line1"></div>
+                    <div class="line2"></div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero-section">
+            <div class="hero-content">
+                <p class="greeting">Data Analyst Portfolio</p>
+                <h1 class="main-title">PVS<br>Narayana<br>Murthy.</h1>
+                <p class="subtitle">I analyze, model, and interpret data to solve complex problems.</p>
+                <a href="#projects" class="btn">Explore My Work</a>
+            </div>
+            <div class="hero-image">
+                <img src="../images/profile.jpg" alt="PVS Narayana Murthy" class="profile-img">
+            </div>
+            <div class="scroll-indicator">
+                <span>Scroll</span>
+                <div class="line"></div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="about-section">
+            <div class="about-container">
+                <h2 class="section-title">My Skills</h2>
+                <div class="about-grid">
+                    <div class="about-text">
+                        <p>I am a detail-oriented Data Scientist passionate about machine learning, statistical analysis, and data narrative. With a strict approach to problem-solving, I focus on building robust models and actionable insights without unnecessary clutter.</p>
+                        <ul class="skills-list">
+                            <li>Python, HTML, CSS</li>
+                            <li>JS</li>
+                            <li>Django</li>
+                            <li>PostgreSQL</li>
+                        </ul>
+                        <a href="skills.html" class="btn" style="display:inline-flex;align-items:center;gap:8px;margin-top:2rem;">View All Skills <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                    <div class="about-stats">
+                        <div class="stat">
+                            <h3>3</h3>
+                            <span>Projects</span>
+                        </div>
+                        <div class="stat">
+                            <h3>3</h3>
+                            <span>Certifications</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="projects-section">
+            <h2 class="section-title">Projects</h2>
+            <div class="projects-container">
+                <div class="project-row" onclick="window.location='project-stylehub.html'" style="cursor:none;">
+                    <div class="project-info">
+                        <span>01</span>
+                        <h3>StyleHub</h3>
+                        <p>Full-stack e-commerce platform with Stripe payments & custom admin.</p>
+                    </div>
+                    <a href="project-stylehub.html" class="project-link"><i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+                <div class="project-row" onclick="window.location='project-todo.html'" style="cursor:none;">
+                    <div class="project-info">
+                        <span>02</span>
+                        <h3>ToDo App</h3>
+                        <p>Django & PostgreSQL task manager with Work Headings and cascade cleanup.</p>
+                    </div>
+                    <a href="project-todo.html" class="project-link"><i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Certifications Section -->
+        <section id="certifications" class="certifications-section">
+            <h2 class="section-title">Certificates</h2>
+            <div class="projects-container">
+                <div class="project-row" onclick="window.open('../pdf/SummerTrainingCertificate.pdf','_blank')" style="cursor:none;">
+                    <div class="project-info">
+                        <span>01</span>
+                        <h3>Summer Training</h3>
+                        <p>Training by LPU in Fundamentals of Data Structures using C++ </p>
+                    </div>
+                    <span class="project-link" style="opacity:1;transform:none;font-size:1.2rem;" title="Download"><i class="fa-solid fa-download"></i></span>
+                </div>
+                <div class="project-row" onclick="window.open('../pdf/Cloud Computing.pdf','_blank')" style="cursor:none;">
+                    <div class="project-info">
+                        <span>02</span>
+                        <h3>Cloud Computing</h3>
+                        <p>NPTEL Certification</p>
+                    </div>
+                    <span class="project-link" style="opacity:1;transform:none;font-size:1.2rem;" title="Download"><i class="fa-solid fa-download"></i></span>
+                </div>
+                <div class="project-row" onclick="window.open('../pdf/1.pdf','_blank')" style="cursor:none;">
+                    <div class="project-info">
+                        <span>03</span>
+                        <h3>Master Generative AI &amp; Generative AI Tools (ChatGPT &amp; more)</h3>
+                        <p>Generative AI Certification by Infosys Springboard</p>
+                    </div>
+                    <span class="project-link" style="opacity:1;transform:none;font-size:1.2rem;" title="Download"><i class="fa-solid fa-download"></i></span>
+                </div>
+                <div class="project-row" onclick="window.open('../pdf/2.pdf','_blank')" style="cursor:none;">
+                    <div class="project-info">
+                        <span>04</span>
+                        <h3>Build Generative AI Apps and Solutions with No-Code Tools</h3>
+                        <p>Generative AI Certification by Infosys Springboard</p>
+                    </div>
+                    <span class="project-link" style="opacity:1;transform:none;font-size:1.2rem;" title="Download"><i class="fa-solid fa-download"></i></span>
+                </div>
+                <div class="project-row" onclick="window.open('../pdf/3.pdf','_blank')" style="cursor:none;">
+                    <div class="project-info">
+                        <span>05</span>
+                        <h3>ChatGPT-4 Prompt Engineering: ChatGPT, Generative AI &amp; LLM</h3>
+                        <p>Prompt Engineering Certification by Infosys Springboard</p>
+                    </div>
+                    <span class="project-link" style="opacity:1;transform:none;font-size:1.2rem;" title="Download"><i class="fa-solid fa-download"></i></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education Section -->
+        <section id="education" class="education-section">
+            <h2 class="section-title">Education</h2>
+            <div class="education-timeline">
+
+                <!-- LPU -->
+                <div class="edu-item edu-animate">
+                    <div class="edu-marker">
+                        <div class="edu-dot"></div>
+                        <div class="edu-line"></div>
+                    </div>
+                    <div class="edu-content">
+                        <div class="edu-header">
+                            <div>
+                                <h3 class="edu-institution">Lovely Professional University</h3>
+                                <p class="edu-degree">Bachelor of Technology – Computer Science &amp; Engineering</p>
+                                <p class="edu-location"><i class="fa-solid fa-location-dot"></i> Phagwara, Punjab</p>
+                            </div>
+                            <div class="edu-right">
+                                <span class="edu-period">Aug 2023 – Present</span>
+                                <!-- <div class="edu-score-bar">
+                                    <p class="edu-score-label">CGPA</p>
+                                    <div class="edu-bar-track">
+                                        <div class="edu-bar-fill" data-width="65.7" style="width:0%"></div>
+                                    </div>
+                                    <span class="edu-score-val">6.57 / 10</span> -->
+                                <!-- </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Narayana Junior College -->
+                <div class="edu-item edu-animate">
+                    <div class="edu-marker">
+                        <div class="edu-dot"></div>
+                        <div class="edu-line"></div>
+                    </div>
+                    <div class="edu-content">
+                        <div class="edu-header">
+                            <div>
+                                <h3 class="edu-institution">Narayana Junior College</h3>
+                                <p class="edu-degree">Intermediate – Mathematics, Physics, Chemistry (MPC)</p>
+                                <p class="edu-location"><i class="fa-solid fa-location-dot"></i> Visakhapatnam, Andhra Pradesh</p>
+                            </div>
+                            <div class="edu-right">
+                                <span class="edu-period">Mar 2021 – May 2023</span>
+                                <div class="edu-score-bar">
+                                    <p class="edu-score-label">Percentage</p>
+                                    <div class="edu-bar-track">
+                                        <div class="edu-bar-fill" data-width="96.6" style="width:0%"></div>
+                                    </div>
+                                    <span class="edu-score-val">96.6%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sri Chaitanya -->
+                <div class="edu-item edu-animate">
+                    <div class="edu-marker">
+                        <div class="edu-dot"></div>
+                        <div class="edu-line" style="display:none;"></div>
+                    </div>
+                    <div class="edu-content">
+                        <div class="edu-header">
+                            <div>
+                                <h3 class="edu-institution">Sri Chaitanya School</h3>
+                                <p class="edu-degree">Matriculation (10th)</p>
+                                <p class="edu-location"><i class="fa-solid fa-location-dot"></i> Visakhapatnam, Andhra Pradesh</p>
+                            </div>
+                            <div class="edu-right">
+                                <span class="edu-period">Mar 2020 – May 2021</span>
+                                <div class="edu-score-bar">
+                                    <p class="edu-score-label">Percentage</p>
+                                    <div class="edu-bar-track">
+                                        <div class="edu-bar-fill" data-width="98.8" style="width:0%"></div>
+                                    </div>
+                                    <span class="edu-score-val">98.8%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer" id="contact">
+        <div class="footer-top">
+            <div class="footer-col">
+                <p class="footer-label">&copy; PVS NARAYANA MURTHY 2026</p>
+                <p>Open for projects and collaborations.</p>
+                <p>Currently, exploring new datasets.</p>
+                <p>Punjab, India</p>
+            </div>
+            <div class="footer-col">
+                <p class="footer-label">NEWSLETTER SIGN UP</p>
+                <p>Be the first to know about new projects!</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Email" required>
+                    <button type="submit"><i class="fa-solid fa-arrow-right"></i></button>
+                </form>
+            </div>
+            <div class="footer-col" id="contact">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem;">
+                    <p class="footer-label" style="margin-bottom: 0 !important;">SAY HELLO</p>
+                    <a href="../pdf/resume.pdf" class="btn resume-btn-inline" download target="_blank"><i class="fa-solid fa-download" style="margin-right: 5px;"></i> Download My Resume</a>
+                </div>
+                <ul class="footer-links-list">
+                    <li><a href="#skills">About Me</a></li>
+                    <li><a href="mailto:shaty768@gmail.com">Contact Me</a></li>
+                </ul>
+                <div class="social-buttons" style="margin-top: 1.5rem; display: flex; gap: 10px;">
+                    <a href="http://www.linkedin.com/in/pvsn-murthy-dev" class="btn btn-social" target="_blank"><i class="fa-brands fa-linkedin-in"></i> LinkedIn</a>
+                    <a href="https://github.com/Balaji-dev-png" class="btn btn-social" target="_blank"><i class="fa-brands fa-github"></i> GitHub</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-huge-text">
+            <h2 style="font-size: clamp(3rem, 10vw, 12rem);">MURTHY.</h2>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Education timeline scroll animation
+        const eduItems = document.querySelectorAll('.edu-animate');
+        const eduObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, i) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('edu-visible');
+                        // Animate score bars
+                        entry.target.querySelectorAll('.edu-bar-fill').forEach(bar => {
+                            bar.style.width = bar.getAttribute('data-width') + '%';
+                        });
+                    }, i * 150);
+                    eduObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.2 });
+        eduItems.forEach(item => eduObserver.observe(item));
+    </script>
+</body>
+</html>

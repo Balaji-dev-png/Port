@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo App | PVS Narayana Murthy</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="../images/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .project-detail-page {
+            min-height: 100vh;
+            padding: 10rem 5% 6rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 3rem;
+            transition: color 0.3s;
+            cursor: none;
+        }
+        .back-link:hover { color: var(--text-color); }
+
+        .project-hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-bottom: 8rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 6rem;
+        }
+        .project-hero-left h1 {
+            font-size: clamp(3rem, 8vw, 6.5rem);
+            font-weight: 800;
+            letter-spacing: -3px;
+            line-height: 0.95;
+            margin-bottom: 2rem;
+        }
+        .project-hero-left p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-muted);
+            max-width: 480px;
+            margin-bottom: 3rem;
+        }
+        .project-cta-links { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .project-cta-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0.9rem 2rem;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            cursor: none;
+        }
+        .btn-primary-proj { background-color: var(--text-color); color: var(--bg-color); border: 2px solid var(--text-color); }
+        .btn-primary-proj:hover { background: transparent; color: var(--text-color); }
+        .btn-outline-proj { background: transparent; color: var(--text-color); border: 2px solid var(--text-color); }
+        .btn-outline-proj:hover { background-color: var(--text-color); color: var(--bg-color); }
+
+        .project-hero-right {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+            border-left: 1px solid var(--border-color);
+            padding-left: 4rem;
+        }
+        .meta-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin-bottom: 0.8rem;
+        }
+        .tech-tags { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+        .tech-tag {
+            padding: 0.4rem 1rem;
+            border: 1px solid var(--border-color);
+            font-size: 0.8rem;
+            font-weight: 500;
+            border-radius: 20px;
+        }
+
+        /* Feature rows — simple numbered list style */
+        .features-section { margin-bottom: 8rem; }
+        .features-section h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 3rem;
+        }
+        .features-list { border-top: 1px solid var(--border-color); }
+        .feature-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 3rem;
+            padding: 2.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .feature-row.visible { opacity: 1; transform: translateX(0); }
+        .feature-num {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            flex-shrink: 0;
+            min-width: 2rem;
+        }
+        .feature-body h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .feature-body p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
+
+        /* Structure visual */
+        .structure-section {
+            border-top: 1px solid var(--border-color);
+            padding-top: 6rem;
+            margin-bottom: 8rem;
+        }
+        .structure-section h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 3rem;
+        }
+        .structure-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2px;
+        }
+        .structure-card {
+            border: 1px solid var(--border-color);
+            padding: 2rem 1.5rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease, background 0.3s;
+        }
+        .structure-card.visible { opacity: 1; transform: translateY(0); }
+        .structure-card:hover { background: var(--text-color); color: var(--bg-color); }
+        .structure-card:hover .s-icon, .structure-card:hover p { color: var(--bg-color); }
+        .s-icon { font-size: 1.3rem; color: var(--text-muted); margin-bottom: 1rem; transition: color 0.3s; }
+        .structure-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .structure-card p { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; transition: color 0.3s; }
+
+        .project-footer-strip {
+            border-top: 1px solid var(--border-color);
+            padding-top: 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 4rem;
+        }
+        .project-footer-strip a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            transition: gap 0.3s;
+            cursor: none;
+        }
+        .project-footer-strip a:hover { gap: 14px; }
+
+        @media (max-width: 900px) {
+            .project-hero { grid-template-columns: 1fr; }
+            .project-hero-right { border-left: none; padding-left: 0; border-top: 1px solid var(--border-color); padding-top: 3rem; }
+            .structure-grid { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div id="page-transition"></div>
+    <div id="cursor"></div>
+    <div id="cursor-follower"><span id="cursor-text"></span></div>
+    <div id="spotlight-overlay"></div>
+
+    <nav class="creative-nav">
+        <div class="nav-container">
+            <a href="index.html" style="text-decoration:none;color:inherit;cursor:none;"><div class="logo"><i class="fa-solid fa-cube"></i> PVS Narayana Murthy<span>.</span></div></a>
+            <div class="nav-center">
+                <ul class="nav-links">
+                    <li><a href="index.html#home">Home</a></li>
+                    <li><a href="skills.html">Skills</a></li>
+                    <li><a href="index.html#projects">Projects</a></li>
+                    <li><a href="index.html#certifications">Certificates</a></li>
+                </ul>
+            </div>
+            <div class="nav-right">
+                <button class="spotlight-toggle inactive" id="spotlight-toggle" aria-label="Toggle Spotlight">
+                    <i class="fa-solid fa-lightbulb"></i>
+                </button>
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Theme">
+                    <i class="fa-solid fa-sun light-icon"></i>
+                    <i class="fa-solid fa-moon dark-icon"></i>
+                </button>
+                <div class="hamburger"><div class="line1"></div><div class="line2"></div></div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="project-detail-page">
+            <a href="index.html#projects" class="back-link"><i class="fa-solid fa-arrow-left"></i> All Projects</a>
+
+            <div class="project-hero">
+                <div class="project-hero-left">
+                    <h1>ToDo<br>App.</h1>
+                    <p>A clean, functional task manager built with Django and PostgreSQL. Organise daily responsibilities under custom Work Headings with auto-cascade cleanup and a responsive UI.</p>
+                    <div class="project-cta-links">
+                        <a href="https://github.com/Balaji-dev-png/ToDo" target="_blank" class="btn-primary-proj">
+                            <i class="fa-brands fa-github"></i> View on GitHub
+                        </a>
+                        <a href="index.html#projects" class="btn-outline-proj">
+                            <i class="fa-solid fa-arrow-left"></i> Back
+                        </a>
+                    </div>
+                </div>
+                <div class="project-hero-right">
+                    <div>
+                        <p class="meta-label">Type</p>
+                        <p style="font-weight:600;">Full-Stack Web Application</p>
+                    </div>
+                    <div>
+                        <p class="meta-label">Tech Stack</p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">Python 3.13</span>
+                            <span class="tech-tag">Django 6.0</span>
+                            <span class="tech-tag">PostgreSQL 18</span>
+                            <span class="tech-tag">HTML5</span>
+                            <span class="tech-tag">CSS3</span>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="meta-label">Repository</p>
+                        <a href="https://github.com/Balaji-dev-png/ToDo" target="_blank" style="color:var(--text-color);font-size:0.9rem;cursor:none;">github.com/Balaji-dev-png/ToDo ↗</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features -->
+            <div class="features-section">
+                <h2>Key Features</h2>
+                <div class="features-list">
+                    <div class="feature-row" data-delay="0">
+                        <span class="feature-num">01</span>
+                        <div class="feature-body">
+                            <h3>Work Headings (Categories)</h3>
+                            <p>Create specific groups for different projects or life areas — e.g., "Personal", "Django Project", "Office" — to keep tasks neatly segmented.</p>
+                        </div>
+                    </div>
+                    <div class="feature-row" data-delay="100">
+                        <span class="feature-num">02</span>
+                        <div class="feature-body">
+                            <h3>Task Management</h3>
+                            <p>Add tasks with titles and descriptions directly into specific headings for clear, structured organisation.</p>
+                        </div>
+                    </div>
+                    <div class="feature-row" data-delay="200">
+                        <span class="feature-num">03</span>
+                        <div class="feature-body">
+                            <h3>Automated Cascade Cleanup</h3>
+                            <p>Database-level cascading means deleting a Work Heading automatically removes all associated tasks — no manual cleanup needed.</p>
+                        </div>
+                    </div>
+                    <div class="feature-row" data-delay="300">
+                        <span class="feature-num">04</span>
+                        <div class="feature-body">
+                            <h3>Simple Completion Flow</h3>
+                            <p>No complex status toggles — simply delete a task once completed for a friction-free productivity experience.</p>
+                        </div>
+                    </div>
+                    <div class="feature-row" data-delay="400">
+                        <span class="feature-num">05</span>
+                        <div class="feature-body">
+                            <h3>Modern Responsive UI</h3>
+                            <p>Styled with a clean, responsive CSS layout ensuring a consistent experience across all screen sizes.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project Structure -->
+            <div class="structure-section">
+                <h2>Project Architecture</h2>
+                <div class="structure-grid">
+                    <div class="structure-card" data-delay="0">
+                        <div class="s-icon"><i class="fa-solid fa-folder-open"></i></div>
+                        <h3>static/</h3>
+                        <p>Custom CSS styling for the entire application.</p>
+                    </div>
+                    <div class="structure-card" data-delay="100">
+                        <div class="s-icon"><i class="fa-solid fa-file-code"></i></div>
+                        <h3>templates/</h3>
+                        <p>HTML layouts — category list, task list, task form, and delete confirmation.</p>
+                    </div>
+                    <div class="structure-card" data-delay="200">
+                        <div class="s-icon"><i class="fa-solid fa-gear"></i></div>
+                        <h3>todolist/</h3>
+                        <p>Django project config — settings.py and URL routing.</p>
+                    </div>
+                    <div class="structure-card" data-delay="300">
+                        <div class="s-icon"><i class="fa-solid fa-layer-group"></i></div>
+                        <h3>todo/</h3>
+                        <p>Core Django app — models, views, and forms for all task/heading logic.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-footer-strip">
+                <a href="index.html#projects">← All Projects</a>
+                <a href="https://github.com/Balaji-dev-png/ToDo" target="_blank">View GitHub Repo →</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-top">
+            <div class="footer-col">
+                <p class="footer-label">&copy; PVS NARAYANA MURTHY 2026</p>
+                <p>Open for projects and collaborations.</p>
+                <p>Currently, exploring new datasets.</p>
+                <p>Punjab, India</p>
+            </div>
+            <div class="footer-col">
+                <p class="footer-label">NEWSLETTER SIGN UP</p>
+                <p>Be the first to know about new projects!</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Email" required>
+                    <button type="submit"><i class="fa-solid fa-arrow-right"></i></button>
+                </form>
+            </div>
+            <div class="footer-col">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1.5rem;">
+                    <p class="footer-label" style="margin-bottom:0 !important;">SAY HELLO</p>
+                    <a href="../pdf/resume.pdf" class="btn resume-btn-inline" download target="_blank"><i class="fa-solid fa-download" style="margin-right:5px;"></i> Download</a>
+                </div>
+                <ul class="footer-links-list">
+                    <li><a href="skills.html">About Me</a></li>
+                    <li><a href="mailto:shaty768@gmail.com">Contact Me</a></li>
+                </ul>
+                <div class="social-buttons" style="margin-top:1.5rem;display:flex;gap:10px;">
+                    <a href="http://www.linkedin.com/in/pvsn-murthy-dev" class="btn btn-social" target="_blank"><i class="fa-brands fa-linkedin-in"></i> LinkedIn</a>
+                    <a href="https://github.com/Balaji-dev-png" class="btn btn-social" target="_blank"><i class="fa-brands fa-github"></i> GitHub</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-huge-text">
+            <h2 style="font-size:clamp(3rem,10vw,12rem);">MURTHY.</h2>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        const rows = document.querySelectorAll('.feature-row, .structure-card');
+        const ro = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const delay = entry.target.getAttribute('data-delay') || 0;
+                    setTimeout(() => entry.target.classList.add('visible'), parseInt(delay));
+                    ro.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        rows.forEach(r => ro.observe(r));
+    </script>
+</body>
+</html>

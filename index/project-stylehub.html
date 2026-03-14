@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StyleHub | PVS Narayana Murthy</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="../images/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .project-detail-page {
+            min-height: 100vh;
+            padding: 10rem 5% 6rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 3rem;
+            transition: color 0.3s;
+            cursor: none;
+        }
+        .back-link:hover { color: var(--text-color); }
+
+        /* Hero */
+        .project-hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-bottom: 8rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 6rem;
+        }
+
+        .project-hero-left h1 {
+            font-size: clamp(3rem, 8vw, 6.5rem);
+            font-weight: 800;
+            letter-spacing: -3px;
+            line-height: 0.95;
+            margin-bottom: 2rem;
+        }
+
+        .project-hero-left p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-muted);
+            max-width: 480px;
+            margin-bottom: 3rem;
+        }
+
+        .project-cta-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .project-cta-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0.9rem 2rem;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            cursor: none;
+        }
+
+        .btn-primary-proj {
+            background-color: var(--text-color);
+            color: var(--bg-color);
+            border: 2px solid var(--text-color);
+        }
+        .btn-primary-proj:hover {
+            background: transparent;
+            color: var(--text-color);
+        }
+
+        .btn-outline-proj {
+            background: transparent;
+            color: var(--text-color);
+            border: 2px solid var(--text-color);
+        }
+        .btn-outline-proj:hover {
+            background-color: var(--text-color);
+            color: var(--bg-color);
+        }
+
+        /* Tech pill tags on the right */
+        .project-hero-right {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+            border-left: 1px solid var(--border-color);
+            padding-left: 4rem;
+        }
+
+        .project-meta-item p.meta-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin-bottom: 0.8rem;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+
+        .tech-tag {
+            padding: 0.4rem 1rem;
+            border: 1px solid var(--border-color);
+            font-size: 0.8rem;
+            font-weight: 500;
+            border-radius: 20px;
+            color: var(--text-color);
+            letter-spacing: 0.5px;
+        }
+
+        /* Features */
+        .features-section {
+            margin-bottom: 8rem;
+        }
+
+        .features-section h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 3rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+        }
+
+        .feature-card {
+            border: 1px solid var(--border-color);
+            padding: 2.5rem 2rem;
+            transition: background 0.3s;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease, background 0.3s;
+        }
+        .feature-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .feature-card:hover {
+            background: var(--text-color);
+            color: var(--bg-color);
+        }
+        .feature-card:hover .feature-icon,
+        .feature-card:hover p {
+            color: var(--bg-color);
+        }
+
+        .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-muted);
+            transition: color 0.3s;
+        }
+
+        .feature-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            letter-spacing: -0.5px;
+        }
+
+        .feature-card p {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+            transition: color 0.3s;
+        }
+
+        /* Admin section two-col layout */
+        .admin-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: center;
+            margin-bottom: 8rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 6rem;
+        }
+
+        .admin-section h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -2px;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+        }
+
+        .admin-section p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .admin-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .admin-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        .admin-list li i {
+            color: var(--text-muted);
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .admin-visual {
+            border: 1px solid var(--border-color);
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .admin-stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1.5rem;
+        }
+        .admin-stat:last-child { border-bottom: none; padding-bottom: 0; }
+
+        .admin-stat .stat-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+        }
+        .admin-stat .stat-val {
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        /* bottom nav */
+        .project-footer-strip {
+            border-top: 1px solid var(--border-color);
+            padding-top: 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 4rem;
+        }
+        .project-footer-strip a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            transition: gap 0.3s;
+            cursor: none;
+        }
+        .project-footer-strip a:hover { gap: 14px; }
+
+        @media (max-width: 900px) {
+            .project-hero { grid-template-columns: 1fr; }
+            .project-hero-right { border-left: none; padding-left: 0; border-top: 1px solid var(--border-color); padding-top: 3rem; }
+            .features-grid { grid-template-columns: 1fr; }
+            .admin-section { grid-template-columns: 1fr; gap: 3rem; }
+        }
+
+        /* Architecture Cards */
+        .structure-card {
+            border: 1px solid var(--border-color);
+            padding: 2rem 1.5rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease, background 0.3s;
+        }
+        .structure-card.visible { opacity: 1; transform: translateY(0); }
+        .structure-card:hover { background: var(--text-color); color: var(--bg-color); }
+        .structure-card:hover .s-icon,
+        .structure-card:hover p { color: var(--bg-color); }
+        .s-icon { font-size: 1.3rem; color: var(--text-muted); margin-bottom: 1rem; transition: color 0.3s; }
+        .structure-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; font-family: monospace; letter-spacing: 0; }
+        .structure-card p { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; transition: color 0.3s; }
+    </style>
+</head>
+<body>
+    <div id="page-transition"></div>
+    <div id="cursor"></div>
+    <div id="cursor-follower"><span id="cursor-text"></span></div>
+    <div id="spotlight-overlay"></div>
+
+    <nav class="creative-nav">
+        <div class="nav-container">
+            <a href="index.html" style="text-decoration:none;color:inherit;cursor:none;">
+            <div class="logo">
+                <i class="fa-solid fa-cube"></i> PVS Narayana Murthy<span>.</span>
+            </div>
+            </a>
+            <div class="nav-center">
+                <ul class="nav-links">
+                    <li><a href="index.html#home">Home</a></li>
+                    <li><a href="skills.html">Skills</a></li>
+                    <li><a href="index.html#projects">Projects</a></li>
+                    <li><a href="index.html#certifications">Certificates</a></li>
+                </ul>
+            </div>
+            <div class="nav-right">
+                <button class="spotlight-toggle inactive" id="spotlight-toggle" aria-label="Toggle Spotlight">
+                    <i class="fa-solid fa-lightbulb"></i>
+                </button>
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Theme">
+                    <i class="fa-solid fa-sun light-icon"></i>
+                    <i class="fa-solid fa-moon dark-icon"></i>
+                </button>
+                <div class="hamburger">
+                    <div class="line1"></div>
+                    <div class="line2"></div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="project-detail-page">
+            <a href="index.html#projects" class="back-link"><i class="fa-solid fa-arrow-left"></i> All Projects</a>
+
+            <!-- Hero -->
+            <div class="project-hero">
+                <div class="project-hero-left">
+                    <h1>Style<br>Hub.</h1>
+                    <p>A full-featured, modern e-commerce platform with a custom admin dashboard, Stripe payments, real-time order lifecycle management, and a responsive dark/light-themed storefront.</p>
+                    <div class="project-cta-links">
+                        <a href="https://github.com/Balaji-dev-png/stylehub" target="_blank" class="btn-primary-proj">
+                            <i class="fa-brands fa-github"></i> View on GitHub
+                        </a>
+                        <a href="index.html#projects" class="btn-outline-proj">
+                            <i class="fa-solid fa-arrow-left"></i> Back
+                        </a>
+                    </div>
+                </div>
+                <div class="project-hero-right">
+                    <div class="project-meta-item">
+                        <p class="meta-label">Type</p>
+                        <p style="font-weight: 600;">Full-Stack Web Application</p>
+                    </div>
+                    <div class="project-meta-item">
+                        <p class="meta-label">Tech Stack</p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Django</span>
+                            <span class="tech-tag">PostgreSQL</span>
+                            <span class="tech-tag">HTML5 / CSS3</span>
+                            <span class="tech-tag">JavaScript</span>
+                            <span class="tech-tag">Stripe API</span>
+                            <span class="tech-tag">SMTP</span>
+                        </div>
+                    </div>
+                    <div class="project-meta-item">
+                        <p class="meta-label">Repository</p>
+                        <a href="https://github.com/Balaji-dev-png/stylehub" target="_blank" style="color: var(--text-color); font-size: 0.9rem; cursor: none;">github.com/Balaji-dev-png/stylehub ↗</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Customer Features -->
+            <div class="features-section">
+                <h2>Customer Experience</h2>
+                <div class="features-grid">
+                    <div class="feature-card" data-delay="0">
+                        <div class="feature-icon"><i class="fa-solid fa-moon"></i></div>
+                        <h3>Adaptive Theming</h3>
+                        <p>Native Dark/Light mode with persistent user preferences and smooth background transitions.</p>
+                    </div>
+                    <div class="feature-card" data-delay="100">
+                        <div class="feature-icon"><i class="fa-solid fa-bolt"></i></div>
+                        <h3>Dynamic Discovery</h3>
+                        <p>JavaScript-powered filtering by price, size, and category with zero page reloads.</p>
+                    </div>
+                    <div class="feature-card" data-delay="200">
+                        <div class="feature-icon"><i class="fa-brands fa-stripe"></i></div>
+                        <h3>Stripe Payments</h3>
+                        <p>Fully integrated PCI-compliant Stripe payment processing for secure checkout.</p>
+                    </div>
+                    <div class="feature-card" data-delay="300">
+                        <div class="feature-icon"><i class="fa-solid fa-box"></i></div>
+                        <h3>Order Lifecycle</h3>
+                        <p>Full checkout simulation, real-time order tracking, and automated email notifications.</p>
+                    </div>
+                    <div class="feature-card" data-delay="400">
+                        <div class="feature-icon"><i class="fa-solid fa-heart"></i></div>
+                        <h3>Wishlist & Cart</h3>
+                        <p>Persistent storage for user favourites and seamless multi-item checkout flow.</p>
+                    </div>
+                    <div class="feature-card" data-delay="500">
+                        <div class="feature-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                        <h3>Modern UI</h3>
+                        <p>Fluid SPA-like transitions, grayscale-to-colour bloom hover effects, and elegant overlays.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Dashboard -->
+            <div class="admin-section">
+                <div>
+                    <h2>Custom Admin<br>Dashboard.</h2>
+                    <p>A dedicated admin panel at <code>/custom-admin/</code> gives full control over the storefront.</p>
+                    <ul class="admin-list">
+                        <li><i class="fa-solid fa-chart-line"></i><span><strong>Business Intelligence</strong> — Real-time metrics for total revenue, order volume, and inventory.</span></li>
+                        <li><i class="fa-solid fa-layer-group"></i><span><strong>Bulk Operations</strong> — Quickly categorize inventory with comma-separated tag inputs.</span></li>
+                        <li><i class="fa-solid fa-toggle-on"></i><span><strong>Visibility Control</strong> — One-click toggles to feature products on the Homepage, New Arrivals, or Main Shop.</span></li>
+                    </ul>
+                </div>
+                <div class="admin-visual">
+                    <div class="admin-stat">
+                        <span class="stat-label">Revenue</span>
+                        <span class="stat-val">In development</span>
+                    </div>
+                    <div class="admin-stat">
+                        <span class="stat-label">Orders</span>
+                        <span class="stat-val">In development</span>
+                    </div>
+                    <div class="admin-stat">
+                        <span class="stat-label">Inventory</span>
+                        <span class="stat-val">Live</span>
+                    </div>
+                    <div class="admin-stat">
+                        <span class="stat-label">CI/CD</span>
+                        <span class="stat-val">GitHub Actions</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project Architecture -->
+            <div style="border-top: 1px solid var(--border-color); padding-top: 6rem; margin-bottom: 8rem;">
+                <h2 style="font-size: 2rem; font-weight: 700; letter-spacing: -1px; margin-bottom: 3rem;">Project Architecture</h2>
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px;">
+                    <div class="structure-card" data-delay="0">
+                        <div class="s-icon"><i class="fa-solid fa-gear"></i></div>
+                        <h3>core/</h3>
+                        <p>Project settings, URL configuration, and WSGI entry point.</p>
+                    </div>
+                    <div class="structure-card" data-delay="100">
+                        <div class="s-icon"><i class="fa-solid fa-store"></i></div>
+                        <h3>store/</h3>
+                        <p>Main app — models for Product, Cart, Order & UserProfile; views for Storefront, Stripe Checkout & Admin.</p>
+                    </div>
+                    <div class="structure-card" data-delay="200">
+                        <div class="s-icon"><i class="fa-solid fa-palette"></i></div>
+                        <h3>static/</h3>
+                        <p>Modular CSS (style1–style11) and JavaScript for filtering, Stripe Elements, and theme logic.</p>
+                    </div>
+                    <div class="structure-card" data-delay="300">
+                        <div class="s-icon"><i class="fa-brands fa-github"></i></div>
+                        <h3>.github/workflows/</h3>
+                        <p>CI/CD pipeline configuration using GitHub Actions for automated testing and deployment.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-footer-strip">
+                <a href="index.html#projects">← All Projects</a>
+                <a href="https://github.com/Balaji-dev-png/stylehub" target="_blank">View GitHub Repo →</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-top">
+            <div class="footer-col">
+                <p class="footer-label">&copy; PVS NARAYANA MURTHY 2026</p>
+                <p>Open for projects and collaborations.</p>
+                <p>Currently, exploring new datasets.</p>
+                <p>Punjab, India</p>
+            </div>
+            <div class="footer-col">
+                <p class="footer-label">NEWSLETTER SIGN UP</p>
+                <p>Be the first to know about new projects!</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Email" required>
+                    <button type="submit"><i class="fa-solid fa-arrow-right"></i></button>
+                </form>
+            </div>
+            <div class="footer-col">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem;">
+                    <p class="footer-label" style="margin-bottom: 0 !important;">SAY HELLO</p>
+                    <a href="../pdf/resume.pdf" class="btn resume-btn-inline" download target="_blank"><i class="fa-solid fa-download" style="margin-right: 5px;"></i> Download</a>
+                </div>
+                <ul class="footer-links-list">
+                    <li><a href="skills.html">About Me</a></li>
+                    <li><a href="mailto:shaty768@gmail.com">Contact Me</a></li>
+                </ul>
+                <div class="social-buttons" style="margin-top: 1.5rem; display: flex; gap: 10px;">
+                    <a href="http://www.linkedin.com/in/pvsn-murthy-dev" class="btn btn-social" target="_blank"><i class="fa-brands fa-linkedin-in"></i> LinkedIn</a>
+                    <a href="https://github.com/Balaji-dev-png" class="btn btn-social" target="_blank"><i class="fa-brands fa-github"></i> GitHub</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-huge-text">
+            <h2 style="font-size: clamp(3rem, 10vw, 12rem);">MURTHY.</h2>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        const cards = document.querySelectorAll('.feature-card, .structure-card');
+        const cardObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const delay = entry.target.getAttribute('data-delay') || 0;
+                    setTimeout(() => entry.target.classList.add('visible'), parseInt(delay));
+                    cardObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        cards.forEach(c => cardObserver.observe(c));
+    </script>
+</body>
+</html>

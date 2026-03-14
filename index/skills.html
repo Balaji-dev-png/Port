@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skills | PVS Narayana Murthy</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="../images/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Skills Page Specific Styles */
+        .skills-page {
+            min-height: 100vh;
+            padding: 10rem 5% 6rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .skills-hero {
+            margin-bottom: 6rem;
+        }
+
+        .skills-hero .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 3rem;
+            transition: color 0.3s;
+        }
+        .skills-hero .back-link:hover { color: var(--text-color); }
+
+        .skills-hero h1 {
+            font-size: clamp(3rem, 8vw, 7rem);
+            font-weight: 800;
+            letter-spacing: -3px;
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+
+        .skills-hero p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 500px;
+        }
+
+        /* Category Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 5rem 6rem;
+        }
+
+        .skill-category {
+            border-top: 1px solid var(--border-color);
+            padding-top: 2.5rem;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.7s ease, transform 0.7s ease, border-color 0.3s;
+        }
+        .skill-category.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .skill-category.visible:hover {
+            border-color: var(--text-color);
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .category-icon {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            border-radius: 50%;
+            transition: background 0.3s, border-color 0.3s, transform 0.3s;
+        }
+        .skill-category:hover .category-icon {
+            background: var(--text-color);
+            color: var(--bg-color);
+            border-color: var(--text-color);
+            transform: rotate(15deg) scale(1.15);
+        }
+
+        .category-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        /* Skill Bars */
+        .skill-item {
+            margin-bottom: 2rem;
+            padding: 0.6rem 0;
+            transition: padding-left 0.3s;
+        }
+        .skill-item:hover {
+            padding-left: 0.5rem;
+        }
+
+        .skill-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 0.6rem;
+        }
+
+        .skill-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            transition: letter-spacing 0.3s;
+        }
+        .skill-item:hover .skill-name {
+            letter-spacing: 1px;
+        }
+
+        .skill-pct {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .skill-bar-track {
+            width: 100%;
+            height: 2px;
+            background-color: var(--border-color);
+            position: relative;
+            overflow: hidden;
+            transition: height 0.3s;
+        }
+        .skill-item:hover .skill-bar-track {
+            height: 4px;
+        }
+
+        .skill-bar-fill {
+            height: 100%;
+            width: 0%;
+            background-color: var(--text-color);
+            transition: width 1.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+            position: relative;
+        }
+
+        .skill-bar-fill::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: -3px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--text-color);
+        }
+
+        /* Circular Radial skill cards for standalone skills */
+        .skill-circles {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .skill-circle-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        .skill-circle-item:hover {
+            transform: translateY(-8px) scale(1.06);
+        }
+        .skill-circle-item:hover .skill-radial .fill {
+            stroke-width: 5;
+            filter: drop-shadow(0 0 6px rgba(255,255,255,0.5));
+        }
+        .skill-circle-item:hover .skill-circle-name {
+            letter-spacing: 2px;
+        }
+
+        .skill-radial {
+            position: relative;
+            width: 100px;
+            height: 100px;
+        }
+
+        .skill-radial svg {
+            transform: rotate(-90deg);
+        }
+
+        .skill-radial .track {
+            fill: none;
+            stroke: var(--border-color);
+            stroke-width: 3;
+        }
+
+        .skill-radial .fill {
+            fill: none;
+            stroke: var(--text-color);
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-dasharray: 251;
+            stroke-dashoffset: 251;
+            transition: stroke-dashoffset 1.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .skill-radial .label {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 800;
+        }
+
+        .skill-radial .label span {
+            font-size: 0.55rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .skill-circle-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        /* Footer strip */
+        .skills-footer-strip {
+            margin-top: 8rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .skills-footer-strip a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            transition: gap 0.3s;
+        }
+
+        .skills-footer-strip a:hover { gap: 14px; }
+
+        @media (max-width: 900px) {
+            .skills-grid { grid-template-columns: 1fr; gap: 4rem; }
+        }
+    </style>
+</head>
+<body>
+    <div id="page-transition"></div>
+    <div id="cursor"></div>
+    <div id="cursor-follower"><span id="cursor-text"></span></div>
+    <div id="spotlight-overlay"></div>
+
+    <nav class="creative-nav">
+        <div class="nav-container">
+            <a href="index.html" style="text-decoration:none;color:inherit;cursor:none;">
+            <div class="logo">
+                <i class="fa-solid fa-cube"></i> PVS Narayana Murthy<span>.</span>
+            </div>
+            </a>
+            <div class="nav-center">
+                <ul class="nav-links">
+                    <li><a href="index.html#home">Home</a></li>
+                    <li><a href="skills.html" class="active-link">Skills</a></li>
+                    <li><a href="index.html#projects">Projects</a></li>
+                    <li><a href="index.html#certifications">Certificates</a></li>
+                </ul>
+            </div>
+            <div class="nav-right">
+                <button class="spotlight-toggle inactive" id="spotlight-toggle" aria-label="Toggle Spotlight">
+                    <i class="fa-solid fa-lightbulb"></i>
+                </button>
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Theme">
+                    <i class="fa-solid fa-sun light-icon"></i>
+                    <i class="fa-solid fa-moon dark-icon"></i>
+                </button>
+                <div class="hamburger">
+                    <div class="line1"></div>
+                    <div class="line2"></div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="skills-page">
+            <div class="skills-hero">
+                <a href="index.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Portfolio</a>
+                <h1>My<br>Skills.</h1>
+                <p>A curated set of technologies I work with to build data-driven solutions.</p>
+            </div>
+
+            <div class="skills-grid">
+
+                <!-- Languages -->
+                <div class="skill-category" data-delay="0">
+                    <div class="category-header">
+                        <div class="category-icon"><i class="fa-solid fa-code"></i></div>
+                        <p class="category-title">Languages</p>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-top">
+                            <span class="skill-name">Python</span>
+                            <span class="skill-pct">90%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" data-width="90"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-top">
+                            <span class="skill-name">HTML</span>
+                            <span class="skill-pct">85%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" data-width="85"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-top">
+                            <span class="skill-name">CSS</span>
+                            <span class="skill-pct">80%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" data-width="80"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-top">
+                            <span class="skill-name">JavaScript</span>
+                            <span class="skill-pct">85%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" data-width="85"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-top">
+                            <span class="skill-name">React</span>
+                            <span class="skill-pct">10%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" data-width="10"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Backend -->
+                <div class="skill-category" data-delay="100">
+                    <div class="category-header">
+                        <div class="category-icon"><i class="fa-solid fa-server"></i></div>
+                        <p class="category-title">Backend</p>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-top">
+                            <span class="skill-name">Django</span>
+                            <span class="skill-pct">80%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" data-width="80"></div>
+                        </div>
+                    </div>
+                    <div class="skill-circles" style="margin-top: 1rem;">
+                        <div class="skill-circle-item">
+                            <div class="skill-radial">
+                                <svg viewBox="0 0 90 90" width="100" height="100">
+                                    <circle class="track" cx="45" cy="45" r="40"/>
+                                    <circle class="fill" cx="45" cy="45" r="40" data-offset="50"/>
+                                </svg>
+                                <div class="label">REST<span>APIs</span></div>
+                            </div>
+                            <p class="skill-circle-name">REST APIs</p>
+                        </div>
+                        <div class="skill-circle-item">
+                            <div class="skill-radial">
+                                <svg viewBox="0 0 90 90" width="100" height="100">
+                                    <circle class="track" cx="45" cy="45" r="40"/>
+                                    <circle class="fill" cx="45" cy="45" r="40" data-offset="60"/>
+                                </svg>
+                                <div class="label">MVC<span>Pattern</span></div>
+                            </div>
+                            <p class="skill-circle-name">MVC</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Database -->
+                <div class="skill-category" data-delay="200">
+                    <div class="category-header">
+                        <div class="category-icon"><i class="fa-solid fa-database"></i></div>
+                        <p class="category-title">Database</p>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-top">
+                            <span class="skill-name">PostgreSQL</span>
+                            <span class="skill-pct">75%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" data-width="75"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-top">
+                            <span class="skill-name">SQL Querying</span>
+                            <span class="skill-pct">80%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" data-width="80"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-top">
+                            <span class="skill-name">Data Modelling</span>
+                            <span class="skill-pct">70%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" data-width="70"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tools & Platforms -->
+                <div class="skill-category" data-delay="300">
+                    <div class="category-header">
+                        <div class="category-icon"><i class="fa-solid fa-wrench"></i></div>
+                        <p class="category-title">Tools &amp; Platforms</p>
+                    </div>
+                    <div class="skill-circles">
+                        <div class="skill-circle-item">
+                            <div class="skill-radial">
+                                <svg viewBox="0 0 90 90" width="100" height="100">
+                                    <circle class="track" cx="45" cy="45" r="40"/>
+                                    <circle class="fill" cx="45" cy="45" r="40" data-offset="30"/>
+                                </svg>
+                                <div class="label"><i class="fa-brands fa-github" style="font-size:1.4rem"></i></div>
+                            </div>
+                            <p class="skill-circle-name">GitHub</p>
+                        </div>
+                        <div class="skill-circle-item">
+                            <div class="skill-radial">
+                                <svg viewBox="0 0 90 90" width="100" height="100">
+                                    <circle class="track" cx="45" cy="45" r="40"/>
+                                    <circle class="fill" cx="45" cy="45" r="40" data-offset="45"/>
+                                </svg>
+                                <div class="label"><i class="fa-solid fa-chart-bar" style="font-size:1.2rem"></i></div>
+                            </div>
+                            <p class="skill-circle-name">Data Viz</p>
+                        </div>
+                        <div class="skill-circle-item">
+                            <div class="skill-radial">
+                                <svg viewBox="0 0 90 90" width="100" height="100">
+                                    <circle class="track" cx="45" cy="45" r="40"/>
+                                    <circle class="fill" cx="45" cy="45" r="40" data-offset="40"/>
+                                </svg>
+                                <div class="label"><i class="fa-solid fa-robot" style="font-size:1.2rem"></i></div>
+                            </div>
+                            <p class="skill-circle-name">ML Tools</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- end skills-grid -->
+
+            <div class="skills-footer-strip">
+                <a href="index.html#projects">View Projects <i class="fa-solid fa-arrow-right"></i></a>
+                <a href="index.html#certifications">Certificates <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-top">
+            <div class="footer-col">
+                <p class="footer-label">&copy; PVS NARAYANA MURTHY 2026</p>
+                <p>Open for projects and collaborations.</p>
+                <p>Currently, exploring new datasets.</p>
+                <p>Punjab, India</p>
+            </div>
+            <div class="footer-col">
+                <p class="footer-label">NEWSLETTER SIGN UP</p>
+                <p>Be the first to know about new projects!</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Email" required>
+                    <button type="submit"><i class="fa-solid fa-arrow-right"></i></button>
+                </form>
+            </div>
+            <div class="footer-col" id="contact">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem;">
+                    <p class="footer-label" style="margin-bottom: 0 !important;">SAY HELLO</p>
+                    <a href="../pdf/resume.pdf" class="btn resume-btn-inline" download target="_blank"><i class="fa-solid fa-download" style="margin-right: 5px;"></i> Download</a>
+                </div>
+                <ul class="footer-links-list">
+                    <li><a href="#skills">About Me</a></li>
+                    <li><a href="mailto:shaty768@gmail.com">Contact Me</a></li>
+                </ul>
+                <div class="social-buttons" style="margin-top: 1.5rem; display: flex; gap: 10px;">
+                    <a href="http://www.linkedin.com/in/pvsn-murthy-dev" class="btn btn-social" target="_blank"><i class="fa-brands fa-linkedin-in"></i> LinkedIn</a>
+                    <a href="https://github.com/Balaji-dev-png" class="btn btn-social" target="_blank"><i class="fa-brands fa-github"></i> GitHub</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-huge-text">
+            <h2 style="font-size: clamp(3rem, 10vw, 12rem);">MURTHY.</h2>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Intersection Observer for skill category entrance
+        const categories = document.querySelectorAll('.skill-category');
+        const catObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, i) => {
+                if (entry.isIntersecting) {
+                    const delay = entry.target.getAttribute('data-delay') || 0;
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                        // Animate skill bars inside
+                        entry.target.querySelectorAll('.skill-bar-fill').forEach(bar => {
+                            bar.style.width = bar.getAttribute('data-width') + '%';
+                        });
+                        // Animate circular radials
+                        entry.target.querySelectorAll('.skill-radial .fill').forEach(circle => {
+                            const circumference = 2 * Math.PI * 40; // r=40
+                            const pct = parseInt(circle.getAttribute('data-offset')) / 100;
+                            const offset = circumference - (pct * circumference);
+                            circle.style.strokeDasharray = circumference;
+                            circle.style.strokeDashoffset = offset;
+                        });
+                    }, parseInt(delay));
+                    catObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+
+        categories.forEach(cat => catObserver.observe(cat));
+    </script>
+</body>
+</html>
