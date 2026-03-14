@@ -60,7 +60,7 @@ const resumeArrowhead = document.getElementById('resume-arrowhead');
 const resumeButton = document.querySelector('.resume-btn-inline');
 
 let isDrawingLine = false;
-let followerX = window.innerWidth / 2, followerY = window.innerHeight / 2;
+let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
 
 function updateSVGPath() {
     if (!resumeButton) return;
@@ -81,21 +81,38 @@ function updateSVGPath() {
     resumeArrowhead.setAttribute('transform', `translate(${targetX}, ${targetY - 15}) rotate(${angle})`);
 }
 
-document.addEventListener('mousemove', (e) => {
+function updateCursorAndFollower(e) {
+    let clientX, clientY;
+    if (e.touches && e.touches.length > 0) {
+        clientX = e.touches[0].clientX;
+        clientY = e.touches[0].clientY;
+    } else if (e.clientX !== undefined) {
+        clientX = e.clientX;
+        clientY = e.clientY;
+    } else {
+        return;
+    }
+
+    mouseX = clientX;
+    mouseY = clientY;
+
     // Small dot
-    cursor.style.left = e.clientX + 'px';
-    cursor.style.top = e.clientY + 'px';
+    cursor.style.left = clientX + 'px';
+    cursor.style.top = clientY + 'px';
     
     // Follower circle (slightly delayed)
     cursorFollower.animate({
-        left: `${e.clientX}px`,
-        top: `${e.clientY}px`
+        left: `${clientX}px`,
+        top: `${clientY}px`
     }, { duration: 150, fill: "forwards" });
     
     if (isDrawingLine) {
         updateSVGPath();
     }
-});
+}
+
+document.addEventListener('mousemove', updateCursorAndFollower);
+document.addEventListener('touchmove', updateCursorAndFollower, {passive: true});
 
 const hoverElements = document.querySelectorAll('a, button, .project-row');
 hoverElements.forEach(el => {
@@ -104,7 +121,7 @@ hoverElements.forEach(el => {
 });
 
 if (profileImage) {
-    profileImage.addEventListener('mouseenter', () => {
+    const activateHover = () => {
         document.body.classList.add('image-hover-state');
         if (cursorText) cursorText.textContent = "Data Analyst";
         
@@ -114,15 +131,22 @@ if (profileImage) {
             resumePointer.classList.remove('hidden');
             updateSVGPath();
         }
-    });
-    profileImage.addEventListener('mouseleave', () => {
+    };
+
+    const deactivateHover = () => {
         document.body.classList.remove('image-hover-state');
         if (cursorText) cursorText.textContent = "";
         
         // Hide line
         isDrawingLine = false;
         if (resumePointer) resumePointer.classList.add('hidden');
-    });
+    };
+
+    profileImage.addEventListener('mouseenter', activateHover);
+    profileImage.addEventListener('mouseleave', deactivateHover);
+    profileImage.addEventListener('touchstart', activateHover, {passive: true});
+    profileImage.addEventListener('touchend', deactivateHover);
+    profileImage.addEventListener('touchcancel', deactivateHover);
 }
 
 // Spotlight Effect
@@ -168,13 +192,22 @@ spotlightSlider.addEventListener('input', () => {
     updateSpotlight();
 });
 
-document.addEventListener('mousemove', (e) => {
-    currentMouseX = e.clientX;
-    currentMouseY = e.clientY;
+function handleSpotlightMove(e) {
+    if (e.touches && e.touches.length > 0) {
+        currentMouseX = e.touches[0].clientX;
+        currentMouseY = e.touches[0].clientY;
+    } else if (e.clientX !== undefined) {
+        currentMouseX = e.clientX;
+        currentMouseY = e.clientY;
+    } else {
+        return;
+    }
     if (isSpotlightActive) {
         updateSpotlight();
     }
-});
+}
+document.addEventListener('mousemove', handleSpotlightMove);
+document.addEventListener('touchmove', handleSpotlightMove, {passive: true});
 
 // Reset spotlight entirely on theme change so the gradient updates on next tick
 themeToggleBtn.addEventListener('click', () => {
