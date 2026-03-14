@@ -912,9 +912,129 @@ body {
 }
 @media (max-width: 768px) {
     .nav-center {
-        display: none;
+        position: fixed;
+        right: -100%;
+        top: 0;
+        height: 100vh;
+        width: 100%;
+        background: var(--header-bg);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: right 0.4s ease-in-out;
+        z-index: 999;
+    }
+    .nav-center.active {
+        right: 0;
+    }
+    .nav-links {
+        flex-direction: column;
+        gap: 2rem;
+        text-align: center;
+    }
+    .nav-links a {
+        font-size: 1.2rem;
+    }
+    .nav-right {
+        z-index: 1001;
+    }
+    .logo {
+        z-index: 1001;
     }
     .hamburger {
         display: flex;
+        z-index: 1001;
+    }
+    .main-title {
+        font-size: clamp(2.5rem, 8vw, 4rem);
+    }
+    .about-stats {
+        flex-direction: column;
+        gap: 2rem;
+    }
+    .stat h3 {
+        font-size: 3rem;
+    }
+    .project-info h3 {
+        font-size: 2rem;
+    }
+    .education-section {
+        padding: 4rem 5%;
+    }
+    .edu-item {
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-title {
+        font-size: 2.2rem;
+    }
+    .subtitle {
+        font-size: 1rem;
+    }
+    .profile-img {
+        width: 100%;
+        max-width: 250px;
+        height: auto;
+        aspect-ratio: 1;
+        object-fit: cover;
+    }
+    .section-title {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+    }
+    .btn {
+        padding: 0.8rem 1.8rem;
+        font-size: 0.9rem;
+    }
+    .footer-huge-text h2 {
+        font-size: 3.5rem;
+    }
+    .skills-list {
+        grid-template-columns: 1fr;
+    }
+    .project-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+    }
+    .project-link {
+        transform: none;
+        opacity: 1;
+        align-self: flex-start;
+    }
+    .project-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    .project-info span {
+        font-size: 1.2rem;
+    }
+    .project-info h3 {
+        font-size: 1.5rem;
+    }
+    .project-info p {
+        font-size: 0.9rem;
+    }
+}
+
+/* Hide custom cursor on touch devices and small screens */
+@media (hover: none) and (pointer: coarse), (max-width: 768px) {
+    #cursor, #cursor-follower, #resume-pointer {
+        display: none !important;
+    }
+    * {
+        cursor: auto !important;
+    }
+    a, button, .btn, .project-row, .spotlight-toggle, .theme-toggle, .hamburger, .nav-links a, .project-link, .resume-btn-inline, .btn-social, input[type="range"] {
+        cursor: pointer !important;
+    }
+    body {
+        cursor: auto !important;
     }
 }

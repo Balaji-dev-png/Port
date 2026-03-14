@@ -183,19 +183,32 @@ themeToggleBtn.addEventListener('click', () => {
     }
 });
 
-// Hamburger menu (visual only for now)
+// Hamburger menu
 const hamburger = document.querySelector('.hamburger');
+const navCenter = document.querySelector('.nav-center');
 let menuOpen = false;
+
 hamburger.addEventListener('click', () => {
     if (!menuOpen) {
         hamburger.querySelector('.line1').style.transform = 'rotate(45deg) translate(5px, 5px)';
         hamburger.querySelector('.line2').style.transform = 'rotate(-45deg) translate(5px, -5px)';
+        navCenter.classList.add('active');
         menuOpen = true;
     } else {
         hamburger.querySelector('.line1').style.transform = 'none';
         hamburger.querySelector('.line2').style.transform = 'none';
+        navCenter.classList.remove('active');
         menuOpen = false;
     }
+});
+
+// Close menu when a link is clicked
+document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+        if (menuOpen) {
+            hamburger.click();
+        }
+    });
 });
 
 // Observer for fade-in animations

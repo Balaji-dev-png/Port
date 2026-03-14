@@ -293,9 +293,26 @@
             .project-hero-right { border-left: none; padding-left: 0; border-top: 1px solid var(--border-color); padding-top: 3rem; }
             .features-grid { grid-template-columns: 1fr; }
             .admin-section { grid-template-columns: 1fr; gap: 3rem; }
+            .structure-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 500px) {
+            .structure-grid { grid-template-columns: 1fr; }
+            .admin-stat {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            .admin-stat .stat-val {
+                font-size: 1.2rem;
+            }
         }
 
         /* Architecture Cards */
+        .structure-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2px;
+        }
         .structure-card {
             border: 1px solid var(--border-color);
             padding: 2rem 1.5rem;
@@ -459,10 +476,9 @@
                 </div>
             </div>
 
-            <!-- Project Architecture -->
             <div style="border-top: 1px solid var(--border-color); padding-top: 6rem; margin-bottom: 8rem;">
                 <h2 style="font-size: 2rem; font-weight: 700; letter-spacing: -1px; margin-bottom: 3rem;">Project Architecture</h2>
-                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px;">
+                <div class="structure-grid">
                     <div class="structure-card" data-delay="0">
                         <div class="s-icon"><i class="fa-solid fa-gear"></i></div>
                         <h3>core/</h3>
