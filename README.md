@@ -3,10 +3,10 @@
 A minimal, dark-first personal portfolio website built with vanilla HTML, CSS, and JavaScript. Showcases projects, skills, certifications, and education with a smooth, interactive design.
 
 **Live pages:**
-- `index/index.html` — Home (Hero, Skills, Projects, Certificates, Education)
-- `index/skills.html` — Detailed Skills page
-- `index/project-stylehub.html` — StyleHub project detail
-- `index/project-todo.html` — ToDo App project detail
+- `index.html` — Home (Hero, Skills, Projects, Certificates, Education)
+- `htmlfiles/skills.html` — Detailed Skills page
+- `htmlfiles/project-stylehub.html` — StyleHub project detail
+- `htmlfiles/project-todo.html` — ToDo App project detail
 
 ---
 
@@ -14,23 +14,23 @@ A minimal, dark-first personal portfolio website built with vanilla HTML, CSS, a
 
 ```
 Port/
-├── index/               # All HTML, CSS, and JS files
-│   ├── index.html
+├── htmlfiles/           # Sub-pages
 │   ├── skills.html
 │   ├── project-stylehub.html
-│   ├── project-todo.html
-│   ├── style.css
-│   └── script.js
+│   └── project-todo.html
 ├── images/              # Image assets
 │   ├── profile.jpg
 │   └── logo.png
-└── pdf/                 # Certificates and resume
-    ├── resume.pdf
-    ├── SummerTrainingCertificate.pdf
-    ├── Cloud Computing.pdf
-    ├── 1.pdf
-    ├── 2.pdf
-    └── 3.pdf
+├── pdf/                 # Certificates and resume
+│   ├── resume.pdf
+│   ├── SummerTrainingCertificate.pdf
+│   ├── Cloud Computing.pdf
+│   ├── 1.pdf
+│   ├── 2.pdf
+│   └── 3.pdf
+├── index.html           # Main entry point
+├── style.css            # Global styles
+└── script.js            # Global interactivity
 ```
 
 ---
@@ -63,15 +63,15 @@ Port/
 
 ## 🚀 Running Locally
 
-No build step required — just open `index/index.html` in any modern browser.
+No build step required — just open `index.html` in any modern browser.
 
 ```bash
 # Option 1: open directly
-start index/index.html
+start index.html
 
 # Option 2: serve with Python (avoids any file:// quirks)
 python -m http.server 8000
-# then visit http://localhost:8000/index/index.html
+# then visit http://localhost:8000/index.html
 ```
 
 ---
