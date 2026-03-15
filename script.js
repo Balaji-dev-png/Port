@@ -54,32 +54,7 @@ const cursor = document.getElementById('cursor');
 const cursorFollower = document.getElementById('cursor-follower');
 const cursorText = document.getElementById('cursor-text');
 const profileImage = document.querySelector('.profile-img');
-const resumePointer = document.getElementById('resume-pointer');
-const resumePath = document.getElementById('resume-path');
-const resumeArrowhead = document.getElementById('resume-arrowhead');
-const resumeButton = document.querySelector('.resume-btn-inline');
 
-let isDrawingLine = false;
-let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
-
-function updateSVGPath() {
-    if (!resumeButton) return;
-    const btnRect = resumeButton.getBoundingClientRect();
-    const targetX = btnRect.left + (btnRect.width / 2);
-    const targetY = btnRect.top;
-    
-    // Draw a curved path from cursor to the button
-    const pathD = `M ${mouseX} ${mouseY} Q ${mouseX} ${(mouseY + targetY)/2} ${targetX} ${targetY - 15}`;
-    resumePath.setAttribute('d', pathD);
-    
-    // Calculate angle at the end of the curve for arrowhead rotation
-    const dx = targetX - mouseX;
-    const dy = (targetY - 15) - ((mouseY + targetY)/2);
-    const angle = Math.atan2(dy, dx) * (180 / Math.PI);
-
-    // Position and rotate arrowhead
-    resumeArrowhead.setAttribute('transform', `translate(${targetX}, ${targetY - 15}) rotate(${angle})`);
-}
 
 function updateCursorAndFollower(e) {
     let clientX, clientY;
@@ -93,9 +68,6 @@ function updateCursorAndFollower(e) {
         return;
     }
 
-    mouseX = clientX;
-    mouseY = clientY;
-
     // Small dot
     cursor.style.left = clientX + 'px';
     cursor.style.top = clientY + 'px';
@@ -106,9 +78,6 @@ function updateCursorAndFollower(e) {
         top: `${clientY}px`
     }, { duration: 150, fill: "forwards" });
     
-    if (isDrawingLine) {
-        updateSVGPath();
-    }
 }
 
 document.addEventListener('mousemove', updateCursorAndFollower);
@@ -125,21 +94,14 @@ if (profileImage) {
         document.body.classList.add('image-hover-state');
         if (cursorText) cursorText.textContent = "Data Analyst";
         
-        // Show line
-        isDrawingLine = true;
-        if (resumePointer) {
-            resumePointer.classList.remove('hidden');
-            updateSVGPath();
-        }
+
     };
 
     const deactivateHover = () => {
         document.body.classList.remove('image-hover-state');
         if (cursorText) cursorText.textContent = "";
         
-        // Hide line
-        isDrawingLine = false;
-        if (resumePointer) resumePointer.classList.add('hidden');
+
     };
 
     profileImage.addEventListener('mouseenter', activateHover);

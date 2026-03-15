@@ -107,35 +107,6 @@ body {
     opacity: 1;
 }
 
-/* Resume Pointer SVG */
-.resume-pointer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    pointer-events: none;
-    z-index: 9990; /* below cursor but above rest */
-    transition: opacity 0.5s ease;
-}
-.resume-pointer.hidden {
-    opacity: 0;
-}
-.resume-text {
-    font-size: 0.8rem;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-}
-#resume-path {
-    animation: dash-flow 1s linear infinite;
-}
-@keyframes dash-flow {
-    to {
-        stroke-dashoffset: -16;
-    }
-}
-
 /* Typography Selection */
 ::selection {
     background-color: var(--text-color);
@@ -710,7 +681,6 @@ body {
 /* Education Section */
 .education-section {
     padding: 6rem 5%;
-    border-top: 1px solid var(--border-color);
 }
 
 .education-timeline {
