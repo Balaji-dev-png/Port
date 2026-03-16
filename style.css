@@ -7,8 +7,6 @@
     --invert-bg: #ffffff;
     --invert-text: #000000;
     --header-bg: rgba(0, 0, 0, 0.8);
-    --spotlight-hidden: rgba(0, 0, 0, 0.95);
-    --spotlight-visible: transparent;
 }
 
 [data-theme="light"] {
@@ -21,6 +19,59 @@
     --header-bg: rgba(255, 255, 255, 0.8);
     --spotlight-hidden: rgba(255, 255, 255, 0.95);
     --spotlight-visible: transparent;
+}
+
+
+
+/* Toast Notification */
+#nl-toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--text-color);
+    color: var(--bg-color);
+    padding: 14px 28px;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 99999;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    white-space: nowrap;
+}
+#nl-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+#nl-toast.success { background: #22c55e; color: #fff; }
+#nl-toast.error   { background: #ef4444; color: #fff; }
+
+/* Magnetic UI */
+.magnetic {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: none;
+    will-change: transform;
+}
+
+.magnetic .mag-text {
+    display: inline-flex;
+    align-items: center;
+    gap: inherit;
+    pointer-events: none;
+    will-change: transform;
+}
+
+/* Custom cursor state when near magnetic element */
+#cursor.cursor-magnetic {
+    transform: translate(-50%, -50%) scale(2.5);
+    opacity: 0.4;
+    filter: blur(2px);
+    border-color: var(--accent-color);
 }
 
 /* Page Transition Overlay */
@@ -181,7 +232,7 @@ body {
     align-items: center;
     gap: 2rem;
 }
-.theme-toggle, .spotlight-toggle {
+.theme-toggle {
     background: none;
     border: none;
     color: var(--text-color);
@@ -194,9 +245,6 @@ body {
     justify-content: center;
     align-items: center;
     transition: color 0.3s;
-}
-.spotlight-toggle.inactive {
-    color: var(--text-muted);
 }
 .theme-toggle .light-icon,
 .theme-toggle .dark-icon {
@@ -270,77 +318,7 @@ body {
     transform: scaleX(-1) scale(1.02);
 }
 
-/* Global Spotlight Overlay */
-#spotlight-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: transparent;
-    pointer-events: none;
-    z-index: 9997;
-    transition: opacity 0.3s ease;
-}
 
-/* Spotlight Controls */
-.spotlight-controls {
-    position: fixed;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 9999;
-    background: var(--header-bg);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid var(--border-color);
-    padding: 15px 30px;
-    border-radius: 30px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    opacity: 1;
-    transition: opacity 0.4s ease, transform 0.4s ease;
-}
-.spotlight-controls.hidden {
-    opacity: 0;
-    pointer-events: none;
-    transform: translate(-50%, 20px);
-}
-.spotlight-controls label {
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: var(--text-color);
-}
-.spotlight-controls input[type=range] {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 150px;
-    background: transparent;
-    cursor: none;
-}
-.spotlight-controls input[type=range]:focus {
-    outline: none;
-}
-.spotlight-controls input[type=range]::-webkit-slider-runnable-track {
-    width: 100%;
-    height: 4px;
-    background: var(--border-color);
-    border-radius: 2px;
-}
-.spotlight-controls input[type=range]::-webkit-slider-thumb {
-    height: 16px;
-    width: 16px;
-    border-radius: 50%;
-    background: var(--text-color);
-    -webkit-appearance: none;
-    appearance: none;
-    margin-top: -6px;
-    transition: transform 0.2s;
-}
-.hover-state .spotlight-controls input[type=range]::-webkit-slider-thumb:hover {
-    transform: scale(1.2);
-}
 
 .greeting {
     font-size: 1rem;

@@ -13,13 +13,6 @@
     <div id="page-transition"></div>
     <div id="cursor"></div>
     <div id="cursor-follower"><span id="cursor-text"></span></div>
-    <div id="spotlight-overlay"></div>
-    
-
-    <div id="spotlight-controls" class="spotlight-controls hidden">
-        <label for="spotlight-slider">Spotlight Radius</label>
-        <input type="range" id="spotlight-slider" min="10" max="60" value="20">
-    </div>
 
     <nav class="creative-nav">
         <div class="nav-container">
@@ -35,9 +28,6 @@
                 </ul>
             </div>
             <div class="nav-right">
-                <button class="spotlight-toggle inactive" id="spotlight-toggle" aria-label="Toggle Spotlight">
-                    <i class="fa-solid fa-lightbulb"></i>
-                </button>
                 <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Theme">
                     <i class="fa-solid fa-sun light-icon"></i>
                     <i class="fa-solid fa-moon dark-icon"></i>
@@ -57,7 +47,7 @@
                 <p class="greeting">Data Analyst Portfolio</p>
                 <h1 class="main-title">PVS<br>Narayana<br>Murthy.</h1>
                 <p class="subtitle">I analyze, model, and interpret data to solve complex problems.</p>
-                <a href="#projects" class="btn">Explore My Work</a>
+                <a href="#projects" class="btn magnetic"><span class="mag-text">Explore My Work</span></a>
             </div>
             <div class="hero-image">
                 <img src="images/profile.jpg" alt="PVS Narayana Murthy" class="profile-img">
@@ -71,7 +61,7 @@
         <!-- Skills Section -->
         <section id="skills" class="about-section">
             <div class="about-container">
-                <h2 class="section-title">Who am i?</h2>
+                <h2 class="section-title">Who I Am?</h2>
                 <div class="about-grid">
                     <div class="about-text">
                         <p>I am a detail-oriented Data Scientist passionate about machine learning, statistical analysis, and data narrative. With a strict approach to problem-solving, I focus on building robust models and actionable insights without unnecessary clutter.</p>
@@ -81,7 +71,7 @@
                             <li>Django</li>
                             <li>PostgreSQL</li>
                         </ul>
-                        <a href="htmlfiles/skills.html" class="btn" style="display:inline-flex;align-items:center;gap:8px;margin-top:2rem;">View All Skills <i class="fa-solid fa-arrow-right"></i></a>
+                        <a href="htmlfiles/skills.html" class="btn magnetic" style="display:inline-flex;align-items:center;gap:8px;margin-top:2rem;"><span class="mag-text">View All Skills <i class="fa-solid fa-arrow-right"></i></span></a>
                     </div>
                     <div class="about-stats">
                         <div class="stat">
@@ -268,8 +258,8 @@
             <div class="footer-col">
                 <p class="footer-label">NEWSLETTER SIGN UP</p>
                 <p>Be the first to know about new projects!</p>
-                <form class="newsletter-form">
-                    <input type="email" placeholder="Email" required>
+                <form class="newsletter-form" id="newsletter-form">
+                    <input type="email" id="newsletter-email" placeholder="Email" required>
                     <button type="submit"><i class="fa-solid fa-arrow-right"></i></button>
                 </form>
             </div>
@@ -293,6 +283,13 @@
         </div>
     </footer>
 
+    <!-- Toast Notification -->
+    <div id="nl-toast"></div>
+
+    <!-- Config (gitignored — keeps API keys out of version control) -->
+    <script src="config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="script.js"></script>
     <script>
         // Education timeline scroll animation

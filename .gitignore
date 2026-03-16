@@ -44,6 +44,7 @@ out/
 .env.*
 *.key
 *.pem
+config.js
 
 # ========================
 # Logs & Temp Files

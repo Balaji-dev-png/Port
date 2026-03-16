@@ -111,73 +111,6 @@ if (profileImage) {
     profileImage.addEventListener('touchcancel', deactivateHover);
 }
 
-// Spotlight Effect
-const spotlightOverlay = document.getElementById('spotlight-overlay');
-const spotlightToggleBtn = document.getElementById('spotlight-toggle');
-const spotlightControls = document.getElementById('spotlight-controls');
-const spotlightSlider = document.getElementById('spotlight-slider');
-
-// Default to off
-let isSpotlightActive = false;
-let currentMouseX = window.innerWidth / 2;
-let currentMouseY = window.innerHeight / 2;
-
-spotlightToggleBtn.classList.add('inactive');
-spotlightOverlay.style.opacity = '0';
-
-function updateSpotlight() {
-    if (!isSpotlightActive) return;
-    const theme = htmlEl.getAttribute('data-theme');
-    const radius = spotlightSlider.value; // grabs value from 10 to 60
-    const colorStops = theme === 'dark' 
-        ? `rgba(0,0,0,0) 0%, rgba(0,0,0,0.96) ${radius}vw` 
-        : `rgba(255,255,255,0) 0%, rgba(255,255,255,0.96) ${radius}vw`;
-        
-    spotlightOverlay.style.background = `radial-gradient(circle at ${currentMouseX}px ${currentMouseY}px, ${colorStops})`;
-}
-
-spotlightToggleBtn.addEventListener('click', () => {
-    isSpotlightActive = !isSpotlightActive;
-    if (isSpotlightActive) {
-        spotlightToggleBtn.classList.remove('inactive');
-        spotlightOverlay.style.opacity = '1';
-        spotlightControls.classList.remove('hidden');
-        updateSpotlight();
-    } else {
-        spotlightToggleBtn.classList.add('inactive');
-        spotlightOverlay.style.opacity = '0';
-        spotlightControls.classList.add('hidden');
-    }
-});
-
-spotlightSlider.addEventListener('input', () => {
-    updateSpotlight();
-});
-
-function handleSpotlightMove(e) {
-    if (e.touches && e.touches.length > 0) {
-        currentMouseX = e.touches[0].clientX;
-        currentMouseY = e.touches[0].clientY;
-    } else if (e.clientX !== undefined) {
-        currentMouseX = e.clientX;
-        currentMouseY = e.clientY;
-    } else {
-        return;
-    }
-    if (isSpotlightActive) {
-        updateSpotlight();
-    }
-}
-document.addEventListener('mousemove', handleSpotlightMove);
-document.addEventListener('touchmove', handleSpotlightMove, {passive: true});
-
-// Reset spotlight entirely on theme change so the gradient updates on next tick
-themeToggleBtn.addEventListener('click', () => {
-    if (isSpotlightActive) {
-        spotlightOverlay.style.background = 'transparent';
-    }
-});
-
 // Hamburger menu
 const hamburger = document.querySelector('.hamburger');
 const navCenter = document.querySelector('.nav-center');
@@ -228,3 +161,152 @@ document.querySelectorAll('.project-row, .about-grid, .section-title').forEach(e
     el.style.transition = 'all 0.8s cubic-bezier(0.165, 0.84, 0.44, 1)';
     observer.observe(el);
 });
+
+
+// ==========================================
+// Newsletter Auto-Reply via EmailJS
+// ==========================================
+(function () {
+    // -----------------------------------------------------------------
+    // CONFIGURATION — replace with your EmailJS values
+    // 1. Sign up free at https://www.emailjs.com/
+    // 2. Create an Email Service (Gmail works great)
+    // 3. Create an Email Template with variables: {{to_email}}
+    // 4. Paste your Public Key, Service ID, and Template ID below
+    // -----------------------------------------------------------------
+    // Keys are loaded from config.js (gitignored) → window.ENV
+    const EMAILJS_PUBLIC_KEY  = (typeof ENV !== 'undefined') ? ENV.EMAILJS_PUBLIC_KEY  : '';
+    const EMAILJS_SERVICE_ID  = (typeof ENV !== 'undefined') ? ENV.EMAILJS_SERVICE_ID  : '';
+    const EMAILJS_TEMPLATE_ID = (typeof ENV !== 'undefined') ? ENV.EMAILJS_TEMPLATE_ID : '';
+
+    const form    = document.getElementById('newsletter-form');
+    const emailIn = document.getElementById('newsletter-email');
+    const toast   = document.getElementById('nl-toast');
+
+    if (!form || !toast) return;
+
+    // Initialise EmailJS
+    if (typeof emailjs !== 'undefined') {
+        emailjs.init(EMAILJS_PUBLIC_KEY);
+    }
+
+    function showToast(message, type = 'success', duration = 4000) {
+        toast.textContent = message;
+        toast.className = `show ${type}`;
+        setTimeout(() => { toast.className = ''; }, duration);
+    }
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const userEmail = emailIn.value.trim();
+        if (!userEmail) return;
+
+        if (typeof emailjs === 'undefined') {
+            showToast('Email service not loaded. Try again later.', 'error');
+            return;
+        }
+
+        if (EMAILJS_PUBLIC_KEY === 'YOUR_PUBLIC_KEY') {
+            // Demo mode — not yet configured
+            showToast('✅ Thanks! (EmailJS not configured yet)', 'success');
+            form.reset();
+            return;
+        }
+
+        try {
+            await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+                to_email: userEmail,    // ← recipient (set {{to_email}} in EmailJS "To Email" field)
+                to_name: 'Subscriber',
+                from_name: 'PVS Narayana Murthy',
+                subject: 'Thanks for subscribing!',
+                message: "Hey! Thanks for signing up. There are no new projects yet, but you'll be the first to know when something drops! 🚀\n\n– Narayana Murthy"
+            });
+            showToast('📬 Subscribed! Check your inbox.', 'success');
+            form.reset();
+        } catch (err) {
+            console.error('EmailJS error:', err);
+            showToast('❌ Failed to send. Please try again.', 'error');
+        }
+    });
+}());
+
+// ==========================================
+// Magnetic UI Effect
+// ==========================================
+(function () {
+    if (typeof gsap === 'undefined') return;
+
+    const RADIUS = 100;    // px — attraction starts within this distance
+    const MAX_MOVE = 25;   // px — max element displacement
+    const TEXT_MULTIPLIER = 1.6; // text moves faster than border for depth effect
+
+    const magneticEls = document.querySelectorAll('.magnetic');
+
+    magneticEls.forEach(el => {
+        const magText = el.querySelector('.mag-text');
+
+        el.addEventListener('mousemove', (e) => {
+            const rect = el.getBoundingClientRect();
+
+            // Center of the element
+            const cx = rect.left + rect.width / 2;
+            const cy = rect.top + rect.height / 2;
+
+            // Distance from mouse to element center
+            const dx = e.clientX - cx;
+            const dy = e.clientY - cy;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < RADIUS) {
+                // Normalise and scale
+                const strength = (RADIUS - dist) / RADIUS; // 0..1
+                const moveX = (dx / RADIUS) * MAX_MOVE * strength;
+                const moveY = (dy / RADIUS) * MAX_MOVE * strength;
+
+                // Animate element body
+                gsap.to(el, {
+                    x: moveX,
+                    y: moveY,
+                    duration: 0.4,
+                    ease: 'power2.out'
+                });
+
+                // Animate text slightly faster (parallax depth)
+                if (magText) {
+                    gsap.to(magText, {
+                        x: moveX * TEXT_MULTIPLIER,
+                        y: moveY * TEXT_MULTIPLIER,
+                        duration: 0.3,
+                        ease: 'power2.out'
+                    });
+                }
+
+                // Custom cursor expand
+                if (cursor) cursor.classList.add('cursor-magnetic');
+            }
+        });
+
+        el.addEventListener('mouseleave', () => {
+            // Spring back with elastic bounce
+            gsap.to(el, {
+                x: 0,
+                y: 0,
+                duration: 0.7,
+                ease: 'elastic.out(1, 0.4)'
+            });
+
+            if (magText) {
+                gsap.to(magText, {
+                    x: 0,
+                    y: 0,
+                    duration: 0.5,
+                    ease: 'elastic.out(1, 0.35)'
+                });
+            }
+
+            // Reset cursor
+            if (cursor) cursor.classList.remove('cursor-magnetic');
+        });
+    });
+}());
+
