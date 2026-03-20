@@ -310,3 +310,75 @@ document.querySelectorAll('.project-row, .about-grid, .section-title').forEach(e
     });
 }());
 
+// ==========================================
+// Dynamic Active Link Highlighting
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+    const navLinks = document.querySelectorAll('.nav-links a');
+    const currentPath = window.location.pathname;
+    
+    let hasPageMatch = false;
+    navLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        if (!href) return;
+
+        const filename = href.split('/').pop();
+        if (filename && filename !== 'index.html' && href.indexOf('#') === -1) {
+            if (currentPath.endsWith(filename)) {
+                link.classList.add('active-link');
+                hasPageMatch = true;
+            }
+        }
+    });
+
+    if (currentPath.includes('project-') && !hasPageMatch) {
+        navLinks.forEach(link => {
+            if (link.getAttribute('href').includes('#projects')) {
+                link.classList.add('active-link');
+                hasPageMatch = true;
+            }
+        });
+    }
+
+    const sections = [];
+    navLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        if (!href) return;
+
+        if (href.startsWith('#') && href !== '#') {
+            const section = document.querySelector(href);
+            if (section) {
+                sections.push({ link, section });
+            }
+        } else if (href.includes('index.html#')) {
+            const hash = href.substring(href.indexOf('#'));
+            const section = document.querySelector(hash);
+            if (section) {
+                sections.push({ link, section });
+            }
+        }
+    });
+
+    if (sections.length > 0) {
+        const observerOptions = {
+            root: null,
+            rootMargin: '-20% 0px -60% 0px',
+            threshold: 0
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    sections.forEach(s => s.link.classList.remove('active-link'));
+                    const activePair = sections.find(s => s.section.id === entry.target.id);
+                    if (activePair) {
+                        activePair.link.classList.add('active-link');
+                    }
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(s => observer.observe(s.section));
+    }
+});
+
