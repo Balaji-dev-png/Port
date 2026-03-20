@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | PVS Narayana Murthy</title>
+    <link rel="stylesheet" href="../style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="../images/logo.png">
+</head>
+<body>
+    <div id="page-transition"></div>
+    <div id="cursor"></div>
+    <div id="cursor-follower"><span id="cursor-text"></span></div>
+
+    <nav class="creative-nav">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fa-solid fa-cube"></i> PVS Narayana Murthy<span>.</span>
+            </div>
+            <div class="nav-center">
+                <ul class="nav-links">
+                    <li><a href="../index.html#home">Home</a></li>
+                    <li><a href="skills.html">Skills</a></li>
+                    <li><a href="../index.html#projects">Projects</a></li>
+                    <li><a href="../index.html#certifications">Certificates</a></li>
+                </ul>
+            </div>
+            <div class="nav-right">
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Theme">
+                    <i class="fa-solid fa-sun light-icon"></i>
+                    <i class="fa-solid fa-moon dark-icon"></i>
+                </button>
+                <div class="hamburger">
+                    <div class="line1"></div>
+                    <div class="line2"></div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="contact-container" style="padding-top: 12rem;">
+            <div class="contact-header">
+                <h1>Let's Connect</h1>
+                <p>Have a project in mind or just want to say hi? Drop me a message below.</p>
+            </div>
+            
+            <div class="contact-form-wrapper">
+                <form id="contact-page-form">
+                    <div class="contact-form-group">
+                        <label for="contact-name">Your Name</label>
+                        <input type="text" id="contact-name" class="contact-form-input" placeholder="John Doe" required>
+                    </div>
+                    <div class="contact-form-group">
+                        <label for="contact-email">Your Email</label>
+                        <input type="email" id="contact-email" class="contact-form-input" placeholder="john@example.com" required>
+                    </div>
+                    <div class="contact-form-group">
+                        <label for="contact-message">Your Message</label>
+                        <textarea id="contact-message" class="contact-form-textarea" placeholder="How can I help you?" required></textarea>
+                    </div>
+                    <button type="submit" class="contact-submit-btn magnetic">
+                        <span class="mag-text">Send Message <i class="fa-solid fa-paper-plane" style="margin-left: 8px;"></i></span>
+                    </button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer" id="contact">
+        <div class="footer-top">
+            <div class="footer-col">
+                <p class="footer-label">&copy; PVS NARAYANA MURTHY 2026</p>
+                <p>Open for projects and collaborations.</p>
+                <p>Currently, exploring new datasets.</p>
+                <p>Punjab, India</p>
+            </div>
+            <div class="footer-col">
+                <p class="footer-label">NEWSLETTER SIGN UP</p>
+                <p>Be the first to know about new projects!</p>
+                <form class="newsletter-form" id="newsletter-form">
+                    <input type="email" id="newsletter-email" placeholder="Email" required>
+                    <button type="submit"><i class="fa-solid fa-arrow-right"></i></button>
+                </form>
+            </div>
+            <div class="footer-col" id="contact">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem;">
+                    <p class="footer-label" style="margin-bottom: 0 !important;">SAY HELLO</p>
+                    <a href="../pdf/resume.pdf" class="btn resume-btn-inline" download target="_blank"><i class="fa-solid fa-download" style="margin-right: 5px;"></i> Download My Resume</a>
+                </div>
+                <ul class="footer-links-list">
+                    <li><a href="../index.html#skills">About Me</a></li>
+                    <li><a href="contact.html">Contact Me</a></li>
+                </ul>
+                <div class="social-buttons" style="margin-top: 1.5rem; display: flex; gap: 10px;">
+                    <a href="http://www.linkedin.com/in/pvsn-murthy-dev" class="btn btn-social" target="_blank"><i class="fa-brands fa-linkedin-in"></i> LinkedIn</a>
+                    <a href="https://github.com/Balaji-dev-png" class="btn btn-social" target="_blank"><i class="fa-brands fa-github"></i> GitHub</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-huge-text">
+            <h2 style="font-size: clamp(3rem, 10vw, 12rem);">MURTHY.</h2>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="nl-toast"></div>
+    <div id="contact-toast" style="position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--text-color); color: var(--bg-color); padding: 14px 28px; border-radius: 50px; font-size: 0.9rem; font-weight: 600; opacity: 0; pointer-events: none; z-index: 99999; transition: opacity 0.4s ease, transform 0.4s ease; white-space: nowrap;"></div>
+
+    <script src="../config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="../script.js"></script>
+    <script>
+        // Form EmailJS Logic specifically for the Contact Page
+        (function() {
+            const form = document.getElementById('contact-page-form');
+            const submitBtn = form.querySelector('.contact-submit-btn');
+            const magText = submitBtn.querySelector('.mag-text');
+            const originalText = magText.innerHTML;
+            const cToast = document.getElementById('contact-toast');
+
+            const showCToast = (message, isError=false) => {
+                cToast.textContent = message;
+                cToast.style.background = isError ? '#ef4444' : '#22c55e';
+                cToast.style.color = '#fff';
+                cToast.style.opacity = '1';
+                cToast.style.transform = 'translateX(-50%) translateY(0)';
+                setTimeout(() => {
+                    cToast.style.opacity = '0';
+                    cToast.style.transform = 'translateX(-50%) translateY(20px)';
+                }, 4000);
+            };
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const name = document.getElementById('contact-name').value.trim();
+                const email = document.getElementById('contact-email').value.trim();
+                const message = document.getElementById('contact-message').value.trim();
+                
+                if(!name || !email || !message) return;
+
+                magText.innerHTML = 'Sending... <i class="fa-solid fa-spinner fa-spin" style="margin-left: 8px;"></i>';
+                submitBtn.style.pointerEvents = 'none';
+
+                try {
+                    // Send using the user's config
+                    await emailjs.send(ENV.EMAILJS_SERVICE_ID, ENV.EMAILJS_TEMPLATE_ID, {
+                        to_email: 'shaty768@gmail.com', // Sending specifically to the developer
+                        to_name: 'PVS Narayana Murthy',
+                        from_name: name,
+                        subject: 'New Message from Contact Form',
+                        message: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
+                    });
+                    
+                    showCToast('Message Sent Successfully!');
+                    form.reset();
+                } catch(err) {
+                    console.error('EmailJS Error:', err);
+                    showCToast('Failed to send message. Please try again.', true);
+                } finally {
+                    magText.innerHTML = originalText;
+                    submitBtn.style.pointerEvents = 'all';
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

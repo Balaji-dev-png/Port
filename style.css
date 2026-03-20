@@ -1027,3 +1027,98 @@ body {
         cursor: auto !important;
     }
 }
+
+
+/* Contact Page Styles */
+.contact-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 8rem 5% 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    min-height: calc(100vh - 300px);
+}
+.contact-header {
+    text-align: center;
+    margin-top: 2rem;
+}
+.contact-header h1 {
+    font-size: clamp(3rem, 6vw, 4.5rem);
+    font-weight: 800;
+    letter-spacing: -2px;
+    margin-bottom: 1rem;
+}
+.contact-header p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    max-width: 500px;
+    margin: 0 auto;
+}
+.contact-form-wrapper {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    padding: 3rem;
+    position: relative;
+    overflow: hidden;
+}
+.contact-form-group {
+    margin-bottom: 2rem;
+    position: relative;
+}
+.contact-form-group label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.8rem;
+    color: var(--text-color);
+}
+.contact-form-input, .contact-form-textarea {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid var(--border-color);
+    padding: 0.8rem 0;
+    color: var(--text-color);
+    font-family: inherit;
+    font-size: 1.1rem;
+    outline: none;
+    transition: border-color 0.3s ease;
+    cursor: none;
+}
+.contact-form-textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+.contact-form-input:focus, .contact-form-textarea:focus {
+    border-bottom-color: var(--text-color);
+}
+.contact-form-input::placeholder, .contact-form-textarea::placeholder {
+    color: var(--text-muted);
+    opacity: 0.5;
+}
+.contact-submit-btn {
+    width: 100%;
+    padding: 1.2rem;
+    background: var(--text-color);
+    color: var(--bg-color);
+    border: 1px solid var(--text-color);
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: none;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+}
+.contact-submit-btn:hover {
+    background: transparent;
+    color: var(--text-color);
+}
+@media (max-width: 768px) {
+    .contact-form-wrapper {
+        padding: 2rem 1.5rem;
+    }
+}
