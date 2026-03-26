@@ -18,11 +18,25 @@ document.addEventListener('click', (e) => {
     const href = anchor.getAttribute('href');
     if (!href || href.startsWith('#') || href.startsWith('mailto') || anchor.getAttribute('target') === '_blank' || anchor.hasAttribute('download')) return;
     e.preventDefault();
+    
+    let targetHref = href;
+    if (!targetHref.includes('nav=1')) {
+        // Split off any hash so ?nav=1 is inserted before the fragment
+        const hashIdx = targetHref.indexOf('#');
+        if (hashIdx !== -1) {
+            const base = targetHref.substring(0, hashIdx);
+            const hash = targetHref.substring(hashIdx);
+            targetHref = (base.includes('?') ? base + '&nav=1' : base + '?nav=1') + hash;
+        } else {
+            targetHref += targetHref.includes('?') ? '&nav=1' : '?nav=1';
+        }
+    }
+
     if (pageTransition) {
         pageTransition.classList.add('active');
-        setTimeout(() => { window.location = href; }, 460);
+        setTimeout(() => { window.location = targetHref; }, 460);
     } else {
-        window.location = href;
+        window.location = targetHref;
     }
 });
 
@@ -219,7 +233,7 @@ document.querySelectorAll('.project-row, .about-grid, .section-title').forEach(e
                 to_name: 'Subscriber',
                 from_name: 'PVS Narayana Murthy',
                 subject: 'Thanks for subscribing!',
-                message: "Hey! Thanks for signing up. There are no new projects yet, but you'll be the first to know when something drops! 🚀\n\n– Narayana Murthy"
+                message: "Hey! Thanks for subscribing. There are no new projects yet, but you'll be the first to know when something drops! 🚀\n\n– Narayana Murthy"
             });
             showToast('📬 Subscribed! Check your inbox.', 'success');
             form.reset();
@@ -382,3 +396,302 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+
+
+// --- GLOBAL LOADER LOGIC ---
+document.addEventListener('DOMContentLoaded', () => {
+    const loader = document.getElementById('global-loader');
+    if (!loader) return;
+
+    if (window.location.search.includes('nav=1') || window.location.hash.includes('nav=1')) {
+        loader.style.display = 'none';
+        return;
+    }
+
+    // Lock scroll immediately while loading
+    document.body.style.overflow = 'hidden';
+
+    // Spotlight logic
+    const filledText = loader.querySelector('.filled-text');
+    document.addEventListener('mousemove', (e) => {
+        if (filledText && !loader.classList.contains('hidden')) {
+            const rect = filledText.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            filledText.style.setProperty('--mouse-x', `${x}px`);
+            filledText.style.setProperty('--mouse-y', `${y}px`);
+        }
+    });
+
+    let currentSpotlightSize = 150;
+    document.addEventListener('wheel', (e) => {
+        if (filledText && !loader.classList.contains('hidden')) {
+            currentSpotlightSize += e.deltaY * -0.2;
+            currentSpotlightSize = Math.max(50, Math.min(currentSpotlightSize, 600));
+            filledText.style.setProperty('--spotlight-size', `${currentSpotlightSize}px`);
+        }
+    });
+
+    const progressBar = document.getElementById('progressBar');
+    const percentageText = document.getElementById('percentageText');
+    let progress = 0;
+    const intervalTime = 15;
+
+    const loadingInterval = setInterval(() => {
+        const speed = Math.random() < 0.3 ? 0 : Math.random() * 3;
+        progress += speed;
+
+        if (progress >= 100) {
+            progress = 100;
+            clearInterval(loadingInterval);
+
+            setTimeout(() => {
+                if (progressBar) progressBar.style.opacity = '0';
+                if (percentageText) percentageText.style.opacity = '0';
+                
+                setTimeout(() => {
+                    loader.classList.add('hidden');
+                    document.body.style.overflow = '';
+                }, 400); // Wait for progress bar fadeout
+            }, 600); // Linger at 100% for a moment
+        }
+
+        if (progressBar && percentageText) {
+            progressBar.style.width = `${progress}%`;
+            percentageText.textContent = `${Math.floor(progress).toString().padStart(2, '0')}%`;
+        }
+    }, intervalTime);
+});
+
+// --- Hover Image Preview Logic ---
+document.addEventListener('DOMContentLoaded', () => {
+    // Only add if not already present
+    if (document.getElementById('hover-preview')) return;
+    
+    const hoverPreview = document.createElement('div');
+    hoverPreview.id = 'hover-preview';
+    document.body.appendChild(hoverPreview);
+
+    const previewElements = document.querySelectorAll('.project-row, .resume-btn-inline');
+
+    previewElements.forEach(row => {
+        row.addEventListener('mouseenter', (e) => {
+            let imgSrc = row.getAttribute('data-preview');
+            // Dynamically provide a preview for the resume button if not explicitly set
+            if (!imgSrc && row.classList.contains('resume-btn-inline')) {
+                imgSrc = window.location.pathname.includes('htmlfiles') 
+                    ? '../images/image.png' 
+                    : 'images/image.png';
+            }
+
+            if (imgSrc) {
+                hoverPreview.style.backgroundImage = `url(${imgSrc})`;
+                hoverPreview.classList.add('active');
+            }
+        });
+        
+        row.addEventListener('mousemove', (e) => {
+            if (typeof gsap !== 'undefined') {
+                gsap.to(hoverPreview, {
+                    x: e.clientX + 20,
+                    y: e.clientY + 20,
+                    duration: 0.4,
+                    ease: 'power3.out'
+                });
+            } else {
+                hoverPreview.style.left = (e.clientX + 20) + 'px';
+                hoverPreview.style.top = (e.clientY + 20) + 'px';
+            }
+        });
+
+        row.addEventListener('mouseleave', () => {
+            hoverPreview.classList.remove('active');
+        });
+    });
+});
+
+// ==========================================
+// 3D Puzzle Cube — 3x3x3 with Scroll Path
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+    gsap.registerPlugin(ScrollTrigger);
+
+    const puzzleContainer = document.getElementById('puzzle-cube-container');
+    const cubeWrapper = document.querySelector('.cube-wrapper');
+    if (!puzzleContainer || !cubeWrapper) return;
+
+    // ── 1. Build 3×3×3 cube programmatically ──────────────────────
+    const GRID  = 3;
+    const SIZE  = 30;  // px per cubie (matches CSS face size)
+    const GAP   = 0;   // gap between cubies (0 = touching)
+    const STEP  = SIZE + GAP;
+    const HALF  = (GRID - 1) / 2;  // 1.0 for 3x3
+
+    // Colours for each face (matches CSS classes)
+    const faceColors = {
+        front:  '#e74c3c',   // Red
+        back:   '#e67e22',   // Orange
+        right:  '#3498db',   // Blue
+        left:   '#2ecc71',   // Green
+        top:    '#f1c40f',   // Yellow
+        bottom: '#ecf0f1',   // White
+    };
+
+    const cubies = [];
+
+    for (let xi = 0; xi < GRID; xi++) {
+        for (let yi = 0; yi < GRID; yi++) {
+            for (let zi = 0; zi < GRID; zi++) {
+                const cubie = document.createElement('div');
+                cubie.classList.add('cubie');
+
+                const xPos = (xi - HALF) * STEP;
+                const yPos = (yi - HALF) * STEP;
+                const zPos = (zi - HALF) * STEP;
+
+                cubie.style.setProperty('--x', `${xPos}px`);
+                cubie.style.setProperty('--y', `${yPos}px`);
+                cubie.style.setProperty('--z', `${zPos}px`);
+
+                // Six faces
+                const faces = [
+                    { cls: 'f-front',  tx: 'rotateY(0deg)',    tz: `${SIZE/2}px` },
+                    { cls: 'f-back',   tx: 'rotateY(180deg)',  tz: `${SIZE/2}px` },
+                    { cls: 'f-right',  tx: 'rotateY(90deg)',   tz: `${SIZE/2}px` },
+                    { cls: 'f-left',   tx: 'rotateY(-90deg)',  tz: `${SIZE/2}px` },
+                    { cls: 'f-top',    tx: 'rotateX(90deg)',   tz: `${SIZE/2}px` },
+                    { cls: 'f-bottom', tx: 'rotateX(-90deg)',  tz: `${SIZE/2}px` },
+                ];
+
+                faces.forEach(({ cls, tx, tz }) => {
+                    const face = document.createElement('div');
+                    face.classList.add('face', cls);
+                    cubie.appendChild(face);
+                });
+
+                cubeWrapper.appendChild(cubie);
+                cubies.push({ el: cubie, xPos, yPos, zPos });
+            }
+        }
+    }
+
+    // ── 2. Scramble: random rotation per cubie ─────────────────────
+    const mults = [-2, -1, 1, 2];
+    const rndM  = () => mults[Math.floor(Math.random() * mults.length)];
+
+    cubies.forEach(({ el }) => {
+        el.style.setProperty('--rX', `${rndM() * 90}deg`);
+        el.style.setProperty('--rY', `${rndM() * 90}deg`);
+        el.style.setProperty('--rZ', `${rndM() * 90}deg`);
+    });
+
+    // ── 3. Scroll-to-solve: unscramble each cubie as page scrolls ──
+    cubies.forEach(({ el }) => {
+        gsap.to(el, {
+            '--rX': '0deg',
+            '--rY': '0deg',
+            '--rZ': '0deg',
+            ease: 'power1.inOut',
+            scrollTrigger: {
+                trigger: document.body,
+                start: 'top top',
+                end: 'bottom bottom',
+                scrub: 2,
+            }
+        });
+    });
+
+    // ── 4. Ambient continuous rotation of the cube-wrapper ─────────
+    gsap.set(cubeWrapper, { rotationX: -30, rotationY: 45 });
+    gsap.to(cubeWrapper, {
+        rotationY: '+=360',
+        rotationX: '+=360',
+        duration: 20,
+        repeat: -1,
+        ease: 'none',
+    });
+
+    // ── 5. Trajectory: cube drifts through empty spaces on scroll ──
+    const trajectoryTween = gsap.to(puzzleContainer, {
+        keyframes: [
+            { top: '10%',  left: 'auto', right: '5%',   ease: 'power1.inOut' },
+            { top: '30%',  left: '3%',   right: 'auto', ease: 'power1.inOut' },
+            { top: '50%',  left: 'auto', right: '4%',   ease: 'power1.inOut' },
+            { top: '70%',  left: '4%',   right: 'auto', ease: 'power1.inOut' },
+            { top: '88%',  left: 'auto', right: '5%',   ease: 'power1.inOut' },
+        ],
+        scrollTrigger: {
+            trigger: document.body,
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: 2,
+        }
+    });
+
+    // ── 6. Drag-to-place ─────────────────────────────────────────
+    // The element is position:fixed so top/left are VIEWPORT coords.
+    // Never add scrollX/scrollY — that's for absolute positioning only.
+    let isDragging  = false;
+    let dragOffsetX = 0;
+    let dragOffsetY = 0;
+    let userPlaced  = false; // Once dragged once, freeze trajectory
+
+    puzzleContainer.style.cursor = 'grab';
+
+    const startDrag = (clientX, clientY) => {
+        isDragging = true;
+
+        // Snapshot current viewport position
+        const rect   = puzzleContainer.getBoundingClientRect();
+        dragOffsetX  = clientX - rect.left;
+        dragOffsetY  = clientY - rect.top;
+
+        if (!userPlaced) {
+            userPlaced = true;
+            // Kill only the positional trajectory, not the solve tweens
+            gsap.killTweensOf(puzzleContainer);
+            // Convert to fixed-position px (no scroll offset needed)
+            puzzleContainer.style.right  = 'auto';
+            puzzleContainer.style.bottom = 'auto';
+            puzzleContainer.style.left   = `${rect.left}px`;
+            puzzleContainer.style.top    = `${rect.top}px`;
+        }
+
+        puzzleContainer.style.cursor     = 'grabbing';
+        puzzleContainer.style.transition = 'none';
+    };
+
+    const onDrag = (clientX, clientY) => {
+        if (!isDragging) return;
+        // Keep purely in viewport coords (fixed positioning)
+        puzzleContainer.style.left = `${clientX - dragOffsetX}px`;
+        puzzleContainer.style.top  = `${clientY - dragOffsetY}px`;
+    };
+
+    const endDrag = () => {
+        if (!isDragging) return;
+        isDragging = false;
+        puzzleContainer.style.cursor     = 'grab';
+        puzzleContainer.style.transition = 'transform 0.3s ease';
+    };
+
+    // Mouse
+    puzzleContainer.addEventListener('mousedown', e => {
+        e.preventDefault();
+        startDrag(e.clientX, e.clientY);
+    });
+    document.addEventListener('mousemove', e => onDrag(e.clientX, e.clientY));
+    document.addEventListener('mouseup',   endDrag);
+
+    // Touch
+    puzzleContainer.addEventListener('touchstart', e => {
+        startDrag(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: true });
+    document.addEventListener('touchmove', e => {
+        if (!isDragging) return;
+        e.preventDefault();
+        onDrag(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: false });
+    document.addEventListener('touchend', endDrag);
+});

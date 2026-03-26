@@ -10,6 +10,21 @@
     <link rel="icon" type="image/png" href="images/logo.png">
 </head>
 <body>
+    <!-- Global Loader -->
+    <div id="global-loader" class="loader-wrapper">
+        <div class="noise"></div>
+        <div class="loading-text outline-text">
+            <span class="char">M</span><span class="char">U</span><span class="char">R</span><span class="char">T</span><span class="char">H</span><span class="char">Y</span><span class="char">.</span>
+        </div>
+        <div class="loading-text filled-text">
+            <span class="char">M</span><span class="char">U</span><span class="char">R</span><span class="char">T</span><span class="char">H</span><span class="char">Y</span><span class="char">.</span>
+        </div>
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="percentage" id="percentageText">00%</div>
+    </div>
+
     <div id="page-transition"></div>
     <div id="cursor"></div>
     <div id="cursor-follower"><span id="cursor-text"></span></div>
@@ -76,11 +91,11 @@
                     </div>
                     <div class="about-stats">
                         <div class="stat">
-                            <h3>3</h3>
+                            <h3>2</h3>
                             <span>Projects</span>
                         </div>
                         <div class="stat">
-                            <h3>3</h3>
+                            <h3>3+</h3>
                             <span>Certifications</span>
                         </div>
                     </div>
@@ -92,7 +107,7 @@
         <section id="projects" class="projects-section">
             <h2 class="section-title">Projects</h2>
             <div class="projects-container">
-                <div class="project-row" onclick="window.location='htmlfiles/project-stylehub.html'" style="cursor:none;">
+                <div class="project-row" data-preview="images/style.png" onclick="window.location='htmlfiles/project-stylehub.html?nav=1'" style="cursor:none;">
                     <div class="project-info">
                         <span>01</span>
                         <h3>StyleHub</h3>
@@ -100,7 +115,7 @@
                     </div>
                     <a href="htmlfiles/project-stylehub.html" class="project-link"><i class="fa-solid fa-arrow-right"></i></a>
                 </div>
-                <div class="project-row" onclick="window.location='htmlfiles/project-todo.html'" style="cursor:none;">
+                <div class="project-row" data-preview="images/todo.jpg" onclick="window.location='htmlfiles/project-todo.html?nav=1'" style="cursor:none;">
                     <div class="project-info">
                         <span>02</span>
                         <h3>ToDo App</h3>
@@ -115,7 +130,7 @@
         <section id="certifications" class="certifications-section">
             <h2 class="section-title">Certificates</h2>
             <div class="projects-container">
-                <div class="project-row" onclick="window.open('pdf/SummerTrainingCertificate.pdf', 'download')" style="cursor:none;">
+                <div class="project-row" data-preview="images/summer.png" onclick="window.open('pdf/SummerTrainingCertificate.pdf', 'download')" style="cursor:none;">
                     <div class="project-info">
                         <span>01</span>
                         <h3>Summer Training</h3>
@@ -123,7 +138,7 @@
                     </div>
                     <span class="project-link" style="opacity:1;transform:none;font-size:1.2rem;" title="Download"><i class="fa-solid fa-download"></i></span>
                 </div>
-                <div class="project-row" onclick="window.open('pdf/Cloud Computing.pdf', 'download')" style="cursor:none;">
+                <div class="project-row" data-preview="images/cloud.png" onclick="window.open('pdf/Cloud Computing.pdf', 'download')" style="cursor:none;">
                     <div class="project-info">
                         <span>02</span>
                         <h3>Cloud Computing</h3>
@@ -131,7 +146,7 @@
                     </div>
                     <span class="project-link" style="opacity:1;transform:none;font-size:1.2rem;" title="Download"><i class="fa-solid fa-download"></i></span>
                 </div>
-                <div class="project-row" onclick="window.open('pdf/1.pdf', 'download')" style="cursor:none;">
+                <div class="project-row" data-preview="images/1.png" onclick="window.open('pdf/1.pdf', 'download')" style="cursor:none;">
                     <div class="project-info">
                         <span>03</span>
                         <h3>Master Generative AI &amp; Generative AI Tools (ChatGPT &amp; more)</h3>
@@ -139,7 +154,7 @@
                     </div>
                     <span class="project-link" style="opacity:1;transform:none;font-size:1.2rem;" title="Download"><i class="fa-solid fa-download"></i></span>
                 </div>
-                <div class="project-row" onclick="window.open('pdf/2.pdf', 'download')" style="cursor:none;">
+                <div class="project-row" data-preview="images/2.png" onclick="window.open('pdf/2.pdf', 'download')" style="cursor:none;">
                     <div class="project-info">
                         <span>04</span>
                         <h3>Build Generative AI Apps and Solutions with No-Code Tools</h3>
@@ -147,7 +162,7 @@
                     </div>
                     <span class="project-link" style="opacity:1;transform:none;font-size:1.2rem;" title="Download"><i class="fa-solid fa-download"></i></span>
                 </div>
-                <div class="project-row" onclick="window.open('pdf/3.pdf', 'download')" style="cursor:none;">
+                <div class="project-row" data-preview="images/3.png" onclick="window.open('pdf/3.pdf', 'download')" style="cursor:none;">
                     <div class="project-info">
                         <span>05</span>
                         <h3>ChatGPT-4 Prompt Engineering: ChatGPT, Generative AI &amp; LLM</h3>
@@ -160,90 +175,111 @@
 
         <!-- Education Section -->
         <section id="education" class="education-section">
-            <h2 class="section-title">Education</h2>
-            <div class="education-timeline">
+            <h2 class="section-title" style="display: flex; align-items: center; flex-wrap: wrap;">
+                Education 
+                <span style="font-size:1rem;color:var(--text-muted);font-weight:400;text-transform:none;letter-spacing:0;margin-left:15px;opacity:0.6;"><i class="fa-solid fa-code-branch"></i> Timeline Layout</span>
+                <button id="reset-timeline-btn" class="btn reset-timeline-btn" style="margin-left: auto; padding: 0.4rem 1rem; font-size: 0.8rem;"><i class="fa-solid fa-rotate-left" style="margin-right: 5px;"></i> Reset</button>
+            </h2>
+            
+            <div class="video-timeline-container">
+                <!-- Ruler -->
+                <div class="timeline-ruler">
+                    <div class="tick" style="left: 0%;"><span>2020</span></div>
+                    <div class="tick" style="left: 16.66%;"><span>2021</span></div>
+                    <div class="tick" style="left: 33.33%;"><span>2022</span></div>
+                    <div class="tick" style="left: 50%;"><span>2023</span></div>
+                    <div class="tick" style="left: 66.66%;"><span>2024</span></div>
+                    <div class="tick" style="left: 83.33%;"><span>2025</span></div>
+                    <div class="tick" style="left: 100%;"><span>2026</span></div>
+                </div>
 
-                <!-- LPU -->
-                <div class="edu-item edu-animate">
-                    <div class="edu-marker">
-                        <div class="edu-dot"></div>
-                        <div class="edu-line"></div>
-                    </div>
-                    <div class="edu-content">
-                        <div class="edu-header">
-                            <div>
-                                <h3 class="edu-institution">Lovely Professional University</h3>
-                                <p class="edu-degree">Bachelor of Technology – Computer Science &amp; Engineering</p>
-                                <p class="edu-location"><i class="fa-solid fa-location-dot"></i> Phagwara, Punjab</p>
+                <!-- Playhead -->
+                <div class="playhead" id="playhead">
+                    <div class="playhead-top"></div>
+                    <div class="playhead-line"></div>
+                </div>
+
+                <!-- Tracks -->
+                <div class="tracks-container" id="tracks-container">
+                    <!-- Track 1 -->
+                    <div class="timeline-track">
+                        <div class="track-label">V3</div>
+                        <div class="track-content">
+                            <div class="timeline-clip clip-lpu" style="left: 59.7%; width: 40.3%;" data-clip="lpu">
+                                <span class="clip-name">LPU - B.Tech</span>
                             </div>
-                            <div class="edu-right">
-                                <span class="edu-period">Aug 2023 – Present</span>
-                                <!-- <div class="edu-score-bar">
-                                    <p class="edu-score-label">CGPA</p>
-                                    <div class="edu-bar-track">
-                                        <div class="edu-bar-fill" data-width="65.7" style="width:0%"></div>
-                                    </div>
-                                    <span class="edu-score-val">6.57 / 10</span> -->
-                                <!-- </div> -->
+                        </div>
+                    </div>
+
+                    <!-- Track 2 -->
+                    <div class="timeline-track">
+                        <div class="track-label">V2</div>
+                        <div class="track-content">
+                            <div class="timeline-clip clip-narayana" style="left: 19.4%; width: 36.1%;" data-clip="narayana">
+                                <span class="clip-name">Narayana Jr College - MPC</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Track 3 -->
+                    <div class="timeline-track">
+                        <div class="track-label">V1</div>
+                        <div class="track-content">
+                            <div class="timeline-clip clip-chaitanya" style="left: 2.7%; width: 19.4%;" data-clip="chaitanya">
+                                <span class="clip-name">Sri Chaitanya - 10th</span>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Narayana Junior College -->
-                <div class="edu-item edu-animate">
-                    <div class="edu-marker">
-                        <div class="edu-dot"></div>
-                        <div class="edu-line"></div>
+            <!-- Clip Details Panel -->
+            <div class="clip-details-panel" id="clip-details-panel">
+                <div class="clip-detail-placeholder">
+                    <i class="fa-solid fa-hand-pointer"></i> Select a clip on the timeline to view details
+                </div>
+            </div>
+
+            <!-- Hidden Data for Clips -->
+            <div id="clip-data" style="display: none;">
+                <div id="data-lpu">
+                    <h3 class="edu-institution">Lovely Professional University</h3>
+                    <p class="edu-degree">Bachelor of Technology – Computer Science &amp; Engineering</p>
+                    <p class="edu-location"><i class="fa-solid fa-location-dot"></i> Phagwara, Punjab</p>
+                    <div class="edu-right" style="align-items:flex-start; margin-top:1rem;">
+                        <span class="edu-period">Aug 2023 – Present</span>
                     </div>
-                    <div class="edu-content">
-                        <div class="edu-header">
-                            <div>
-                                <h3 class="edu-institution">Narayana Junior College</h3>
-                                <p class="edu-degree">Intermediate – Mathematics, Physics, Chemistry (MPC)</p>
-                                <p class="edu-location"><i class="fa-solid fa-location-dot"></i> Visakhapatnam, Andhra Pradesh</p>
+                </div>
+                <div id="data-narayana">
+                    <h3 class="edu-institution">Narayana Junior College</h3>
+                    <p class="edu-degree">Intermediate – Mathematics, Physics, Chemistry (MPC)</p>
+                    <p class="edu-location"><i class="fa-solid fa-location-dot"></i> Visakhapatnam, Andhra Pradesh</p>
+                    <div class="edu-right" style="align-items:flex-start; margin-top:1rem;">
+                        <span class="edu-period">Mar 2021 – May 2023</span>
+                        <div class="edu-score-bar" style="text-align:left;">
+                            <p class="edu-score-label">Percentage</p>
+                            <div class="edu-bar-track" style="margin-left:0; background:var(--border-color);">
+                                <div class="edu-bar-fill" style="width:96.6%"></div>
                             </div>
-                            <div class="edu-right">
-                                <span class="edu-period">Mar 2021 – May 2023</span>
-                                <div class="edu-score-bar">
-                                    <p class="edu-score-label">Percentage</p>
-                                    <div class="edu-bar-track">
-                                        <div class="edu-bar-fill" data-width="96.6" style="width:0%"></div>
-                                    </div>
-                                    <span class="edu-score-val">96.6%</span>
-                                </div>
-                            </div>
+                            <span class="edu-score-val">96.6%</span>
                         </div>
                     </div>
                 </div>
-
-                <!-- Sri Chaitanya -->
-                <div class="edu-item edu-animate">
-                    <div class="edu-marker">
-                        <div class="edu-dot"></div>
-                        <div class="edu-line" style="display:none;"></div>
-                    </div>
-                    <div class="edu-content">
-                        <div class="edu-header">
-                            <div>
-                                <h3 class="edu-institution">Sri Chaitanya School</h3>
-                                <p class="edu-degree">Matriculation (10th)</p>
-                                <p class="edu-location"><i class="fa-solid fa-location-dot"></i> Visakhapatnam, Andhra Pradesh</p>
+                <div id="data-chaitanya">
+                    <h3 class="edu-institution">Sri Chaitanya School</h3>
+                    <p class="edu-degree">Matriculation (10th)</p>
+                    <p class="edu-location"><i class="fa-solid fa-location-dot"></i> Visakhapatnam, Andhra Pradesh</p>
+                    <div class="edu-right" style="align-items:flex-start; margin-top:1rem;">
+                        <span class="edu-period">Mar 2020 – May 2021</span>
+                        <div class="edu-score-bar" style="text-align:left;">
+                            <p class="edu-score-label">Percentage</p>
+                            <div class="edu-bar-track" style="margin-left:0; background:var(--border-color);">
+                                <div class="edu-bar-fill" style="width:98.8%"></div>
                             </div>
-                            <div class="edu-right">
-                                <span class="edu-period">Mar 2020 – May 2021</span>
-                                <div class="edu-score-bar">
-                                    <p class="edu-score-label">Percentage</p>
-                                    <div class="edu-bar-track">
-                                        <div class="edu-bar-fill" data-width="98.8" style="width:0%"></div>
-                                    </div>
-                                    <span class="edu-score-val">98.8%</span>
-                                </div>
-                            </div>
+                            <span class="edu-score-val">98.8%</span>
                         </div>
                     </div>
                 </div>
-
             </div>
         </section>
     </main>
@@ -267,7 +303,7 @@
             <div class="footer-col" id="contact">
                 <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem;">
                     <p class="footer-label" style="margin-bottom: 0 !important;">SAY HELLO</p>
-                    <a href="pdf/resume.pdf" class="btn resume-btn-inline" download target="_blank"><i class="fa-solid fa-download" style="margin-right: 5px;"></i> Download My Resume</a>
+                    <a href="#" onclick="window.open('pdf/resume.pdf', 'download')" class="btn resume-btn-inline"><i class="fa-solid fa-download" style="margin-right: 5px;"></i> Download My Resume</a>
                 </div>
                 <ul class="footer-links-list">
                     <li><a href="#skills">About Me</a></li>
@@ -287,29 +323,86 @@
     <!-- Toast Notification -->
     <div id="nl-toast"></div>
 
+    <!-- 3D Puzzle Cube -->
+    <div id="puzzle-cube-container">
+        <div class="cube-wrapper">
+            <!-- Cubies generated by JS -->
+        </div>
+    </div>
+
     <!-- Config (gitignored — keeps API keys out of version control) -->
     <script src="config.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="script.js"></script>
     <script>
-        // Education timeline scroll animation
-        const eduItems = document.querySelectorAll('.edu-animate');
-        const eduObserver = new IntersectionObserver((entries) => {
-            entries.forEach((entry, i) => {
-                if (entry.isIntersecting) {
+        // Video Timeline Interactivity
+        const timelineContainer = document.querySelector('.video-timeline-container');
+        const playhead = document.getElementById('playhead');
+        
+        if (timelineContainer && playhead) {
+            timelineContainer.addEventListener('mousemove', (e) => {
+                const rect = timelineContainer.getBoundingClientRect();
+                const x = e.clientX - rect.left + timelineContainer.scrollLeft;
+                playhead.style.left = `${x}px`;
+            });
+            
+            // Optional: reset playhead on mouse leave
+            timelineContainer.addEventListener('mouseleave', () => {
+                playhead.style.left = '0px';
+            });
+        }
+
+        const clips = document.querySelectorAll('.timeline-clip');
+        const detailsPanel = document.getElementById('clip-details-panel');
+
+        clips.forEach(clip => {
+            clip.addEventListener('click', () => {
+                const clipId = clip.getAttribute('data-clip');
+                const clipData = document.getElementById(`data-${clipId}`);
+                
+                if (clipData && detailsPanel) {
+                    // Inject content
+                    detailsPanel.innerHTML = clipData.innerHTML;
+                    
+                    // Simple fade-in animation
+                    detailsPanel.style.opacity = '0';
+                    detailsPanel.style.transform = 'translateY(10px)';
+                    
                     setTimeout(() => {
-                        entry.target.classList.add('edu-visible');
-                        // Animate score bars
-                        entry.target.querySelectorAll('.edu-bar-fill').forEach(bar => {
-                            bar.style.width = bar.getAttribute('data-width') + '%';
+                        detailsPanel.style.opacity = '1';
+                        detailsPanel.style.transform = 'translateY(0)';
+                        // Animate score bars if any
+                        detailsPanel.querySelectorAll('.edu-bar-fill').forEach(bar => {
+                            const targetWidth = bar.style.width;
+                            bar.style.width = '0%';
+                            setTimeout(() => {
+                                bar.style.width = targetWidth;
+                            }, 50);
                         });
-                    }, i * 150);
-                    eduObserver.unobserve(entry.target);
+                    }, 50);
                 }
             });
-        }, { threshold: 0.2 });
-        eduItems.forEach(item => eduObserver.observe(item));
+        });
+
+        const resetBtn = document.getElementById('reset-timeline-btn');
+        if (resetBtn && detailsPanel) {
+            resetBtn.addEventListener('click', () => {
+                detailsPanel.style.opacity = '0';
+                detailsPanel.style.transform = 'translateY(-10px)';
+                
+                setTimeout(() => {
+                    detailsPanel.innerHTML = `
+                        <div class="clip-detail-placeholder">
+                            <i class="fa-solid fa-hand-pointer"></i> Select a clip on the timeline to view details
+                        </div>
+                    `;
+                    detailsPanel.style.opacity = '1';
+                    detailsPanel.style.transform = 'translateY(0)';
+                }, 150);
+            });
+        }
     </script>
 </body>
 </html>

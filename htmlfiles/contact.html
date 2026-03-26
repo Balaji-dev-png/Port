@@ -10,15 +10,32 @@
     <link rel="icon" type="image/png" href="../images/logo.png">
 </head>
 <body>
+    <!-- Global Loader -->
+    <div id="global-loader" class="loader-wrapper">
+        <div class="noise"></div>
+        <div class="loading-text outline-text">
+            <span class="char">M</span><span class="char">U</span><span class="char">R</span><span class="char">T</span><span class="char">H</span><span class="char">Y</span><span class="char">.</span>
+        </div>
+        <div class="loading-text filled-text">
+            <span class="char">M</span><span class="char">U</span><span class="char">R</span><span class="char">T</span><span class="char">H</span><span class="char">Y</span><span class="char">.</span>
+        </div>
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="percentage" id="percentageText">00%</div>
+    </div>
+
     <div id="page-transition"></div>
     <div id="cursor"></div>
     <div id="cursor-follower"><span id="cursor-text"></span></div>
 
     <nav class="creative-nav">
         <div class="nav-container">
+            <a href="../index.html" style="text-decoration:none;color:inherit;cursor:none;">
             <div class="logo">
                 <i class="fa-solid fa-cube"></i> PVS Narayana Murthy<span>.</span>
             </div>
+            </a>
             <div class="nav-center">
                 <ul class="nav-links">
                     <li><a href="../index.html#home">Home</a></li>
